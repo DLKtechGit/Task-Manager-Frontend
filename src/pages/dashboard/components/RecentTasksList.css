@@ -1,0 +1,324 @@
+.recent-tasks {
+  background-color: white; /* card */
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.recent-tasks-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.recent-tasks-title {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: #171717; /* foreground */
+}
+
+.recent-tasks-view-all {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #3b82f6; /* primary */
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.recent-tasks-view-all:hover {
+  color: rgba(59, 130, 246, 0.8); /* primary/80 */
+}
+
+/* Desktop View */
+.recent-tasks-desktop {
+  display: none;
+  overflow-x: auto;
+}
+
+@media (min-width: 768px) {
+  .recent-tasks-desktop {
+    display: block;
+  }
+}
+
+.recent-tasks-table {
+  width: 100%;
+}
+
+.recent-tasks-thead {
+  border-bottom: 1px solid #e5e7eb; /* border */
+}
+
+.recent-tasks-th {
+  text-align: left;
+  padding: 0.75rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280; /* muted-foreground */
+}
+
+.recent-tasks-tbody {
+  border-bottom: 1px solid #e5e7eb; /* border */
+}
+
+.recent-tasks-tr {
+  transition: background-color 0.2s;
+}
+
+.recent-tasks-tr:hover {
+  background-color: rgba(243, 244, 246, 0.5); /* muted/50 */
+}
+
+.recent-tasks-td {
+  padding: 1rem 0.5rem;
+  vertical-align: middle;
+}
+
+/* Task Title */
+.recent-tasks-task-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #171717; /* foreground */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.recent-tasks-project {
+  font-size: 0.75rem;
+  color: #6b7280; /* muted-foreground */
+  margin-top: 0.25rem;
+}
+
+/* Assignee */
+.recent-tasks-assignee {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.recent-tasks-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.recent-tasks-assignee-name {
+  font-size: 0.875rem;
+  color: #171717; /* foreground */
+}
+
+/* Priority Badge */
+.recent-tasks-priority {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+}
+
+.priority-high {
+  background-color: #fef2f2; /* red-100 */
+  color: #991b1b; /* red-800 */
+  border-color: #fecaca; /* red-200 */
+}
+
+.priority-medium {
+  background-color: #fff7ed; /* orange-100 */
+  color: #9a3412; /* orange-800 */
+  border-color: #fed7aa; /* orange-200 */
+}
+
+.priority-low {
+  background-color: #f0fdf4; /* green-100 */
+  color: #166534; /* green-800 */
+  border-color: #bbf7d0; /* green-200 */
+}
+
+.priority-default {
+  background-color: #f3f4f6; /* gray-100 */
+  color: #374151; /* gray-800 */
+  border-color: #e5e7eb; /* gray-200 */
+}
+
+/* Status Badge */
+.recent-tasks-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+}
+
+.status-unassigned {
+  background-color: #f3f4f6; /* gray-100 */
+  color: #374151; /* gray-800 */
+  border-color: #e5e7eb; /* gray-200 */
+}
+
+.status-assigned {
+  background-color: #dbeafe; /* blue-100 */
+  color: #1e40af; /* blue-800 */
+  border-color: #bfdbfe; /* blue-200 */
+}
+
+.status-in_progress {
+  background-color: #fff7ed; /* orange-100 */
+  color: #9a3412; /* orange-800 */
+  border-color: #fed7aa; /* orange-200 */
+}
+
+.status-closed {
+  background-color: #f0fdf4; /* green-100 */
+  color: #166534; /* green-800 */
+  border-color: #bbf7d0; /* green-200 */
+}
+
+/* Due Date */
+.recent-tasks-due-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recent-tasks-date {
+  font-size: 0.875rem;
+}
+
+.recent-tasks-date-overdue {
+  color: #dc2626; /* red-600 */
+}
+
+.recent-tasks-date-normal {
+  color: #171717; /* foreground */
+}
+
+/* Mobile View */
+.recent-tasks-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .recent-tasks-mobile {
+    display: none;
+  }
+}
+
+.recent-tasks-card {
+  background-color: rgba(243, 244, 246, 0.3); /* muted/30 */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb; /* border */
+}
+
+.recent-tasks-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.recent-tasks-card-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.recent-tasks-card-title-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #171717; /* foreground */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 0.25rem;
+}
+
+.recent-tasks-card-project {
+  font-size: 0.75rem;
+  color: #6b7280; /* muted-foreground */
+}
+
+.recent-tasks-card-priority {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+  margin-left: 0.5rem;
+}
+
+.recent-tasks-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.recent-tasks-card-assignee {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recent-tasks-card-avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.recent-tasks-card-assignee-name {
+  font-size: 0.875rem;
+  color: #171717; /* foreground */
+}
+
+.recent-tasks-card-due-date {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recent-tasks-card-date {
+  font-size: 0.875rem;
+}
+
+.recent-tasks-card-date-overdue {
+  color: #dc2626; /* red-600 */
+}
+
+.recent-tasks-card-date-normal {
+  color: #6b7280; /* muted-foreground */
+}
+
+/* Select Wrapper */
+.recent-tasks-select-wrapper {
+  width: 100%;
+}
+
+.recent-tasks-select-sm {
+  font-size: 0.75rem;
+}
+
+.recent-tasks-select-md {
+  font-size: 0.875rem;
+}
+
+/* Transition */
+.recent-tasks-transition {
+  transition: all 0.2s;
+}

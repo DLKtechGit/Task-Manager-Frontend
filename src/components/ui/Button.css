@@ -1,0 +1,181 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.btn:focus-visible {
+  outline: none;
+  ring: 2px solid;
+  ring-color: inherit;
+  ring-offset: 2px;
+}
+
+.btn:disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Variants */
+.btn-default {
+  background-color: #3b82f6; /* primary */
+  color: white; /* primary-foreground */
+}
+
+.btn-default:hover {
+  background-color: rgba(59, 130, 246, 0.9); /* primary/90 */
+}
+
+.btn-destructive {
+  background-color: #ef4444; /* destructive */
+  color: white; /* destructive-foreground */
+}
+
+.btn-destructive:hover {
+  background-color: rgba(239, 68, 68, 0.9); /* destructive/90 */
+}
+
+.btn-outline {
+  border: 1px solid #d1d5db; /* input */
+}
+
+.btn-outline:hover {
+  background-color: #f3f4f6; /* accent */
+  color: #374151; /* accent-foreground */
+}
+
+.btn-secondary {
+  background-color: #6b7280; /* secondary */
+  color: white; /* secondary-foreground */
+}
+
+.btn-secondary:hover {
+  background-color: rgba(107, 114, 128, 0.8); /* secondary/80 */
+}
+
+.btn-ghost:hover {
+  background-color: #f3f4f6; /* accent */
+  color: #374151; /* accent-foreground */
+}
+
+.btn-link {
+  color: #3b82f6; /* primary */
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+.btn-success {
+  background-color: #10b981; /* success */
+  color: white; /* success-foreground */
+}
+
+.btn-success:hover {
+  background-color: rgba(16, 185, 129, 0.9); /* success/90 */
+}
+
+.btn-warning {
+  background-color: #f59e0b; /* warning */
+  color: white; /* warning-foreground */
+}
+
+.btn-warning:hover {
+  background-color: rgba(245, 158, 11, 0.9); /* warning/90 */
+}
+
+.btn-danger {
+  background-color: #dc2626; /* error */
+  color: white; /* error-foreground */
+}
+
+.btn-danger:hover {
+  background-color: rgba(220, 38, 38, 0.9); /* error/90 */
+}
+
+/* Sizes */
+.btn-default-size {
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.btn-sm {
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: 0.375rem;
+}
+
+.btn-lg {
+  height: 2.75rem;
+  padding: 0 2rem;
+  border-radius: 0.375rem;
+}
+
+.btn-icon {
+  height: 2.5rem;
+  width: 2.5rem;
+  padding: 0;
+}
+
+.btn-xs {
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+}
+
+.btn-xl {
+  height: 3rem;
+  padding: 0 2.5rem;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+}
+
+.btn-full-width {
+  width: 100%;
+}
+
+/* Loading spinner */
+.btn-loading-spinner {
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+  height: 1rem;
+  width: 1rem;
+}
+
+.btn-loading-spinner circle {
+  opacity: 0.25;
+  stroke: currentColor;
+  stroke-width: 4;
+}
+
+.btn-loading-spinner path {
+  opacity: 0.75;
+  fill: currentColor;
+}
+
+.btn-icon-left {
+  margin-right: 0.5rem;
+}
+
+.btn-icon-right {
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

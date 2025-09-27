@@ -1,0 +1,64 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.icon-fallback {
+  color: #6b7280; /* gray color */
+}
+
+/* Size utilities (if needed for specific sizing) */
+.icon-xs {
+  width: 12px;
+  height: 12px;
+}
+
+.icon-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-md {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-lg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-xl {
+  width: 32px;
+  height: 32px;
+}
+
+/* Color utilities (if needed for specific colors) */
+.icon-primary {
+  color: #3b82f6; /* primary color */
+}
+
+.icon-secondary {
+  color: #6b7280; /* muted foreground */
+}
+
+.icon-success {
+  color: #10b981; /* success color */
+}
+
+.icon-warning {
+  color: #f59e0b; /* warning color */
+}
+
+.icon-error {
+  color: #ef4444; /* error color */
+}
+
+.icon-white {
+  color: #ffffff;
+}
+
+.icon-black {
+  color: #000000;
+}
