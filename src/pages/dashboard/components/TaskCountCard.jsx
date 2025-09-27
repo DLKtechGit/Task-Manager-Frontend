@@ -1,19 +1,18 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
+import './TaskCountCard.css'; // import the CSS file
 
 const TaskCountCard = ({ title, count, icon, color, bgColor, textColor }) => {
   return (
-    <div className={`${bgColor} rounded-lg p-6 shadow-card transition-smooth hover:shadow-modal`}>
-      <div className="flex items-center justify-between">
+    <div className={`task-card ${bgColor}`}>
+      <div className="task-card-content">
         <div>
-          <p className="text-sm font-medium text-muted-foreground mb-1">
-            {title}
-          </p>
-          <p className={`text-3xl font-bold ${textColor}`}>
+          <p className="task-card-title">{title}</p>
+          <p className={`task-card-count ${textColor}`}>
             {count?.toLocaleString()}
           </p>
         </div>
-        <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center`}>
+        <div className={`task-card-icon ${color}`}>
           <Icon name={icon} size={24} color="white" />
         </div>
       </div>

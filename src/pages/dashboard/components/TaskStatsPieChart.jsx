@@ -1,5 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import './TaskStatsPieChart.css'; // import CSS file
 
 const TaskStatsPieChart = () => {
   const data = [
@@ -12,8 +13,8 @@ const TaskStatsPieChart = () => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload?.length) {
       return (
-        <div className="bg-card border border-border rounded-lg p-3 shadow-modal">
-          <p className="text-sm font-medium text-foreground">
+        <div className="custom-tooltip">
+          <p className="tooltip-text">
             {payload?.[0]?.name}: {payload?.[0]?.value} tasks
           </p>
         </div>
@@ -35,7 +36,7 @@ const TaskStatsPieChart = () => {
         fill="white" 
         textAnchor={x > cx ? 'start' : 'end'} 
         dominantBaseline="central"
-        className="text-sm font-medium"
+        className="chart-label"
       >
         {`${(percent * 100)?.toFixed(0)}%`}
       </text>
@@ -43,9 +44,9 @@ const TaskStatsPieChart = () => {
   };
 
   return (
-    <div className="bg-card rounded-lg p-6 shadow-card">
-      <h3 className="text-lg font-semibold text-foreground mb-4">Task Distribution</h3>
-      <div className="h-80">
+    <div className="task-pie-container">
+      <h3 className="task-pie-title">Task Distribution</h3>
+      <div className="task-pie-chart">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -67,7 +68,7 @@ const TaskStatsPieChart = () => {
               verticalAlign="bottom" 
               height={36}
               formatter={(value, entry) => (
-                <span style={{ color: entry?.color }} className="text-sm font-medium">
+                <span style={{ color: entry?.color }} className="legend-text">
                   {value}
                 </span>
               )}

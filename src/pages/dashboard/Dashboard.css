@@ -1,0 +1,80 @@
+.dashboard {
+  min-height: 100vh;
+  background-color: #fafafa; /* background */
+}
+
+.dashboard-main {
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-main {
+    margin-left: 15rem; /* md:ml-60 */
+    padding: 2rem; /* md:p-8 */
+  }
+}
+
+/* Header Section */
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-title {
+  font-size: 1.875rem; /* text-3xl */
+  line-height: 2.25rem;
+  font-weight: 700;
+  color: #171717; /* foreground */
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.dashboard-subtitle {
+  color: #6b7280; /* muted-foreground */
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+/* Task Count Cards Grid */
+.dashboard-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* grid-cols-2 */
+  gap: 1rem; /* gap-4 */
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+@media (min-width: 1024px) {
+  .dashboard-cards-grid {
+    grid-template-columns: repeat(4, 1fr); /* lg:grid-cols-4 */
+  }
+}
+
+@media (min-width: 768px) {
+  .dashboard-cards-grid {
+    gap: 1.5rem; /* md:gap-6 */
+  }
+}
+
+/* Charts Section */
+.dashboard-charts-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* grid-cols-1 */
+  gap: 1.5rem; /* gap-6 */
+  margin-bottom: 2rem; /* mb-8 */
+}
+
+@media (min-width: 1024px) {
+  .dashboard-charts-grid {
+    grid-template-columns: repeat(2, 1fr); /* lg:grid-cols-2 */
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .dashboard-main {
+    padding: 1rem;
+  }
+  
+  .dashboard-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

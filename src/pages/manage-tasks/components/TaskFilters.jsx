@@ -2,6 +2,7 @@ import React from 'react';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
+import './TaskFilters.css';
 
 const TaskFilters = ({ 
   searchTerm, 
@@ -42,25 +43,25 @@ const TaskFilters = ({
   const hasActiveFilters = statusFilter || priorityFilter || assigneeFilter || searchTerm;
 
   return (
-    <div className="bg-card rounded-lg border border-border p-6 mb-6">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
-        <div className="flex-1 max-w-md">
+    <div className="task-filters">
+      <div className="task-filters-header">
+        <div className="task-filters-search">
           <Input
             type="search"
             placeholder="Search tasks..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e?.target?.value)}
-            className="w-full"
+            className="task-filters-search-input"
           />
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="task-filters-controls">
           <Select
             options={statusOptions}
             value={statusFilter}
             onChange={onStatusFilterChange}
             placeholder="Filter by status"
-            className="w-full sm:w-40"
+            className="task-filters-select"
           />
           
           <Select
@@ -68,7 +69,7 @@ const TaskFilters = ({
             value={priorityFilter}
             onChange={onPriorityFilterChange}
             placeholder="Filter by priority"
-            className="w-full sm:w-40"
+            className="task-filters-select"
           />
           
           <Select
@@ -76,7 +77,7 @@ const TaskFilters = ({
             value={assigneeFilter}
             onChange={onAssigneeFilterChange}
             placeholder="Filter by assignee"
-            className="w-full sm:w-40"
+            className="task-filters-select"
           />
           
           {hasActiveFilters && (
@@ -86,59 +87,60 @@ const TaskFilters = ({
               iconName="X"
               iconPosition="left"
               iconSize={16}
-              className="whitespace-nowrap"
+              className="task-filters-clear"
             >
               Clear Filters
             </Button>
           )}
         </div>
       </div>
+      
       {/* Task Count Summary */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-background rounded-lg p-4 border border-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+      <div className="task-filters-summary">
+        <div className="task-filters-count-card task-filters-count-unassigned">
+          <div className="task-filters-count-content">
+            <div className="task-filters-count-icon">
+              <div className="task-filters-count-dot"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">{taskCounts?.unassigned}</p>
-              <p className="text-sm text-muted-foreground">Unassigned</p>
+              <p className="task-filters-count-number">{taskCounts?.unassigned}</p>
+              <p className="task-filters-count-label">Unassigned</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-background rounded-lg p-4 border border-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+        <div className="task-filters-count-card task-filters-count-assigned">
+          <div className="task-filters-count-content">
+            <div className="task-filters-count-icon">
+              <div className="task-filters-count-dot"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">{taskCounts?.assigned}</p>
-              <p className="text-sm text-muted-foreground">Assigned</p>
+              <p className="task-filters-count-number">{taskCounts?.assigned}</p>
+              <p className="task-filters-count-label">Assigned</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-background rounded-lg p-4 border border-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+        <div className="task-filters-count-card task-filters-count-in-progress">
+          <div className="task-filters-count-content">
+            <div className="task-filters-count-icon">
+              <div className="task-filters-count-dot"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">{taskCounts?.inProgress}</p>
-              <p className="text-sm text-muted-foreground">In Progress</p>
+              <p className="task-filters-count-number">{taskCounts?.inProgress}</p>
+              <p className="task-filters-count-label">In Progress</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-background rounded-lg p-4 border border-border">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        <div className="task-filters-count-card task-filters-count-closed">
+          <div className="task-filters-count-content">
+            <div className="task-filters-count-icon">
+              <div className="task-filters-count-dot"></div>
             </div>
             <div>
-              <p className="text-2xl font-bold text-foreground">{taskCounts?.closed}</p>
-              <p className="text-sm text-muted-foreground">Closed</p>
+              <p className="task-filters-count-number">{taskCounts?.closed}</p>
+              <p className="task-filters-count-label">Closed</p>
             </div>
           </div>
         </div>

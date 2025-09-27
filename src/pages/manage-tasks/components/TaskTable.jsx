@@ -2,23 +2,39 @@ import React, { useState, useMemo } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
+import './TaskTable.css';
 
 const TaskTable = ({ tasks, onEditTask, onUpdateStatus, onViewDetails }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const priorityColors = {
-    high: 'bg-red-100 text-red-800 border-red-200',
-    medium: 'bg-orange-100 text-orange-800 border-orange-200',
-    low: 'bg-green-100 text-green-800 border-green-200'
+  const getPriorityClass = (priority) => {
+    switch (priority) {
+      case 'high':
+        return 'task-table-badge task-table-priority-high';
+      case 'medium':
+        return 'task-table-badge task-table-priority-medium';
+      case 'low':
+        return 'task-table-badge task-table-priority-low';
+      default:
+        return 'task-table-badge task-table-priority-medium';
+    }
   };
 
-  const statusColors = {
-    unassigned: 'bg-gray-100 text-gray-800 border-gray-200',
-    assigned: 'bg-blue-100 text-blue-800 border-blue-200',
-    'in-progress': 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    closed: 'bg-green-100 text-green-800 border-green-200'
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'unassigned':
+        return 'task-table-badge task-table-status-unassigned';
+      case 'assigned':
+        return 'task-table-badge task-table-status-assigned';
+      case 'in-progress':
+        return 'task-table-badge task-table-status-in-progress';
+      case 'closed':
+        return 'task-table-badge task-table-status-closed';
+      default:
+        return 'task-table-badge task-table-status-unassigned';
+    }
   };
 
   const statusOptions = [
@@ -79,105 +95,105 @@ const TaskTable = ({ tasks, onEditTask, onUpdateStatus, onViewDetails }) => {
 
   const getSortIcon = (columnKey) => {
     if (sortConfig?.key !== columnKey) {
-      return <Icon name="ArrowUpDown" size={16} className="text-muted-foreground" />;
+      return <Icon name="ArrowUpDown" size={16} className="task-table-sort-icon" />;
     }
     return sortConfig?.direction === 'asc' 
-      ? <Icon name="ArrowUp" size={16} className="text-primary" />
-      : <Icon name="ArrowDown" size={16} className="text-primary" />;
+      ? <Icon name="ArrowUp" size={16} className="task-table-sort-icon-active" />
+      : <Icon name="ArrowDown" size={16} className="task-table-sort-icon-active" />;
   };
 
   return (
-    <div className="bg-card rounded-lg border border-border overflow-hidden">
+    <div className="task-table">
       {/* Desktop Table View */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-muted/50 border-b border-border">
+      <div className="task-table-desktop">
+        <table className="task-table-table">
+          <thead className="task-table-thead">
             <tr>
-              <th className="text-left px-6 py-4 font-medium text-foreground">
+              <th className="task-table-th">
                 <button
                   onClick={() => handleSort('taskName')}
-                  className="flex items-center space-x-2 hover:text-primary transition-micro"
+                  className="task-table-sort-button"
                 >
                   <span>Task Name</span>
                   {getSortIcon('taskName')}
                 </button>
               </th>
-              <th className="text-left px-6 py-4 font-medium text-foreground">
+              <th className="task-table-th">
                 <button
                   onClick={() => handleSort('status')}
-                  className="flex items-center space-x-2 hover:text-primary transition-micro"
+                  className="task-table-sort-button"
                 >
                   <span>Status</span>
                   {getSortIcon('status')}
                 </button>
               </th>
-              <th className="text-left px-6 py-4 font-medium text-foreground">
+              <th className="task-table-th">
                 <button
                   onClick={() => handleSort('priority')}
-                  className="flex items-center space-x-2 hover:text-primary transition-micro"
+                  className="task-table-sort-button"
                 >
                   <span>Priority</span>
                   {getSortIcon('priority')}
                 </button>
               </th>
-              <th className="text-left px-6 py-4 font-medium text-foreground">
+              <th className="task-table-th">
                 <button
                   onClick={() => handleSort('assignedTo')}
-                  className="flex items-center space-x-2 hover:text-primary transition-micro"
+                  className="task-table-sort-button"
                 >
                   <span>Assigned To</span>
                   {getSortIcon('assignedTo')}
                 </button>
               </th>
-              <th className="text-left px-6 py-4 font-medium text-foreground">
+              <th className="task-table-th">
                 <button
                   onClick={() => handleSort('dueDate')}
-                  className="flex items-center space-x-2 hover:text-primary transition-micro"
+                  className="task-table-sort-button"
                 >
                   <span>Due Date</span>
                   {getSortIcon('dueDate')}
                 </button>
               </th>
-              <th className="text-right px-6 py-4 font-medium text-foreground">Actions</th>
+              <th className="task-table-th" style={{ textAlign: 'right' }}>Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border">
+          <tbody className="task-table-tbody">
             {paginatedTasks?.map((task) => (
-              <tr key={task?.id} className="hover:bg-muted/30 transition-micro">
-                <td className="px-6 py-4">
-                  <div className="flex flex-col">
-                    <span className="font-medium text-foreground">{task?.taskName}</span>
-                    <span className="text-sm text-muted-foreground">{task?.projectName}</span>
+              <tr key={task?.id} className="task-table-tr task-table-transition">
+                <td className="task-table-td">
+                  <div className="task-table-task-info">
+                    <span className="task-table-task-name">{task?.taskName}</span>
+                    <span className="task-table-project-name">{task?.projectName}</span>
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="w-32">
+                <td className="task-table-td">
+                  <div className="task-table-select">
                     <Select
                       options={statusOptions}
                       value={task?.status}
                       onChange={(value) => handleStatusChange(task?.id, value)}
-                      className="text-xs"
+                      className="task-table-select-xs"
                     />
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${priorityColors?.[task?.priority]}`}>
+                <td className="task-table-td">
+                  <span className={getPriorityClass(task?.priority)}>
                     {task?.priority?.charAt(0)?.toUpperCase() + task?.priority?.slice(1)}
                   </span>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
-                      <Icon name="User" size={16} className="text-muted-foreground" />
+                <td className="task-table-td">
+                  <div className="task-table-assignee">
+                    <div className="task-table-avatar">
+                      <Icon name="User" size={16} className="task-table-avatar-icon" />
                     </div>
-                    <span className="text-sm text-foreground">{task?.assignedTo}</span>
+                    <span className="task-table-assignee-name">{task?.assignedTo}</span>
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <span className="text-sm text-foreground">{formatDate(task?.dueDate)}</span>
+                <td className="task-table-td">
+                  <span className="task-table-date">{formatDate(task?.dueDate)}</span>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center justify-end space-x-2">
+                <td className="task-table-td">
+                  <div className="task-table-actions">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -203,16 +219,17 @@ const TaskTable = ({ tasks, onEditTask, onUpdateStatus, onViewDetails }) => {
           </tbody>
         </table>
       </div>
+      
       {/* Mobile Card View */}
-      <div className="md:hidden space-y-4 p-4">
+      <div className="task-table-mobile">
         {paginatedTasks?.map((task) => (
-          <div key={task?.id} className="bg-background border border-border rounded-lg p-4 space-y-3">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <h3 className="font-medium text-foreground">{task?.taskName}</h3>
-                <p className="text-sm text-muted-foreground">{task?.projectName}</p>
+          <div key={task?.id} className="task-table-card">
+            <div className="task-table-card-header">
+              <div className="task-table-card-info">
+                <h3 className="task-table-card-title">{task?.taskName}</h3>
+                <p className="task-table-card-project">{task?.projectName}</p>
               </div>
-              <div className="flex space-x-1">
+              <div className="task-table-card-actions">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -230,34 +247,35 @@ const TaskTable = ({ tasks, onEditTask, onUpdateStatus, onViewDetails }) => {
               </div>
             </div>
             
-            <div className="flex items-center justify-between">
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${priorityColors?.[task?.priority]}`}>
+            <div className="task-table-card-badges">
+              <span className={getPriorityClass(task?.priority)}>
                 {task?.priority?.charAt(0)?.toUpperCase() + task?.priority?.slice(1)}
               </span>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${statusColors?.[task?.status]}`}>
+              <span className={getStatusClass(task?.status)}>
                 {task?.status?.charAt(0)?.toUpperCase() + task?.status?.slice(1)?.replace('-', ' ')}
               </span>
             </div>
             
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-6 h-6 bg-muted rounded-full flex items-center justify-center">
-                  <Icon name="User" size={12} className="text-muted-foreground" />
+            <div className="task-table-card-details">
+              <div className="task-table-card-assignee">
+                <div className="task-table-card-avatar">
+                  <Icon name="User" size={12} className="task-table-card-avatar-icon" />
                 </div>
-                <span className="text-foreground">{task?.assignedTo}</span>
+                <span className="task-table-card-assignee-name">{task?.assignedTo}</span>
               </div>
-              <span className="text-muted-foreground">{formatDate(task?.dueDate)}</span>
+              <span className="task-table-card-date">{formatDate(task?.dueDate)}</span>
             </div>
           </div>
         ))}
       </div>
+      
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-6 py-4 border-t border-border">
-          <div className="text-sm text-muted-foreground">
+        <div className="task-table-pagination">
+          <div className="task-table-pagination-info">
             Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, sortedTasks?.length)} of {sortedTasks?.length} tasks
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="task-table-pagination-controls">
             <Button
               variant="outline"
               size="sm"
@@ -268,7 +286,7 @@ const TaskTable = ({ tasks, onEditTask, onUpdateStatus, onViewDetails }) => {
             >
               Previous
             </Button>
-            <span className="text-sm text-foreground">
+            <span className="task-table-pagination-text">
               Page {currentPage} of {totalPages}
             </span>
             <Button

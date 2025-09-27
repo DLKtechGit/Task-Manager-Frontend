@@ -7,7 +7,7 @@ import TaskTable from './components/TaskTable';
 import CreateTaskModal from './components/CreateTaskModal';
 import TaskDetailsModal from './components/TaskDetailsModal';
 import Icon from '../../components/AppIcon';
-
+import './ManageTasksPage.css';
 
 const ManageTasksPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -124,7 +124,7 @@ const ManageTasksPage = () => {
 
   // Filter tasks based on search and filters
   const filteredTasks = useMemo(() => {
-    return tasks?.filter(task => {
+    return tasks.filter(task => {
       const matchesSearch = task?.taskName?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
                            task?.description?.toLowerCase()?.includes(searchTerm?.toLowerCase()) ||
                            task?.projectName?.toLowerCase()?.includes(searchTerm?.toLowerCase());
@@ -140,10 +140,10 @@ const ManageTasksPage = () => {
   // Calculate task counts
   const taskCounts = useMemo(() => {
     return {
-      unassigned: tasks?.filter(task => task?.status === 'unassigned')?.length,
-      assigned: tasks?.filter(task => task?.status === 'assigned')?.length,
-      inProgress: tasks?.filter(task => task?.status === 'in-progress')?.length,
-      closed: tasks?.filter(task => task?.status === 'closed')?.length
+      unassigned: tasks.filter(task => task?.status === 'unassigned')?.length,
+      assigned: tasks.filter(task => task?.status === 'assigned')?.length,
+      inProgress: tasks.filter(task => task?.status === 'in-progress')?.length,
+      closed: tasks.filter(task => task?.status === 'closed')?.length
     };
   }, [tasks]);
 
@@ -152,7 +152,7 @@ const ManageTasksPage = () => {
   };
 
   const handleUpdateStatus = (taskId, newStatus) => {
-    setTasks(prev => prev?.map(task => 
+    setTasks(prev => prev.map(task => 
       task?.id === taskId ? { ...task, status: newStatus } : task
     ));
   };
@@ -179,91 +179,88 @@ const ManageTasksPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="manage-tasks-page">
       <NavigationSidebar userRole="admin" onToggle={() => {}} />
-      <div className="md:ml-60">
-        <div className="p-6">
-          <div className="max-w-7xl mx-auto">
-            <BreadcrumbNavigation />
+      <div className="manage-tasks-main">
+        <div className="manage-tasks-container">
+          <BreadcrumbNavigation />
+          
+          {/* Header */}
+          <div className="manage-tasks-header">
+            <div className="manage-tasks-title-section">
+              <h1 className="manage-tasks-title">Manage Tasks</h1>
+              <p className="manage-tasks-subtitle">
+                Create, assign, and track tasks across your projects
+              </p>
+            </div>
             
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Manage Tasks</h1>
-                <p className="text-muted-foreground mt-2">
-                  Create, assign, and track tasks across your projects
-                </p>
+            <div className="manage-tasks-create-button">
+              <Button
+                onClick={() => setIsCreateModalOpen(true)}
+                iconName="Plus"
+                iconPosition="left"
+                iconSize={20}
+              >
+                Create Task
+              </Button>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <TaskFilters
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            statusFilter={statusFilter}
+            onStatusFilterChange={setStatusFilter}
+            priorityFilter={priorityFilter}
+            onPriorityFilterChange={setPriorityFilter}
+            assigneeFilter={assigneeFilter}
+            onAssigneeFilterChange={setAssigneeFilter}
+            onClearFilters={handleClearFilters}
+            taskCounts={taskCounts}
+            teamMembers={teamMembers}
+          />
+
+          {/* Tasks Table */}
+          <div className="manage-tasks-section">
+            <div className="manage-tasks-section-header">
+              <h2 className="manage-tasks-section-title">
+                Tasks ({filteredTasks?.length})
+              </h2>
+            </div>
+            
+            <TaskTable
+              tasks={filteredTasks}
+              onEditTask={handleEditTask}
+              onUpdateStatus={handleUpdateStatus}
+              onViewDetails={handleViewDetails}
+            />
+          </div>
+
+          {/* Empty State */}
+          {filteredTasks?.length === 0 && (
+            <div className="manage-tasks-empty">
+              <div className="manage-tasks-empty-icon">
+                <Icon name="Search" size={32} className="manage-tasks-empty-icon-svg" />
               </div>
-              
-              <div className="mt-4 sm:mt-0">
+              <h3 className="manage-tasks-empty-title">No tasks found</h3>
+              <p className="manage-tasks-empty-description">
+                {searchTerm || statusFilter || priorityFilter || assigneeFilter
+                  ? 'Try adjusting your search or filters' : 'Get started by creating your first task'
+                }
+              </p>
+              {!searchTerm && !statusFilter && !priorityFilter && !assigneeFilter && (
                 <Button
                   onClick={() => setIsCreateModalOpen(true)}
                   iconName="Plus"
                   iconPosition="left"
-                  iconSize={20}
-                  className="w-full sm:w-auto"
+                  iconSize={16}
                 >
-                  Create Task
+                  Create First Task
                 </Button>
-              </div>
+              )}
             </div>
-
-            {/* Filters */}
-            <TaskFilters
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              statusFilter={statusFilter}
-              onStatusFilterChange={setStatusFilter}
-              priorityFilter={priorityFilter}
-              onPriorityFilterChange={setPriorityFilter}
-              assigneeFilter={assigneeFilter}
-              onAssigneeFilterChange={setAssigneeFilter}
-              onClearFilters={handleClearFilters}
-              taskCounts={taskCounts}
-              teamMembers={teamMembers}
-            />
-
-            {/* Tasks Table */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold text-foreground">
-                  Tasks ({filteredTasks?.length})
-                </h2>
-              </div>
-              
-              <TaskTable
-                tasks={filteredTasks}
-                onEditTask={handleEditTask}
-                onUpdateStatus={handleUpdateStatus}
-                onViewDetails={handleViewDetails}
-              />
-            </div>
-
-            {/* Empty State */}
-            {filteredTasks?.length === 0 && (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Icon name="Search" size={32} className="text-muted-foreground" />
-                </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No tasks found</h3>
-                <p className="text-muted-foreground mb-4">
-                  {searchTerm || statusFilter || priorityFilter || assigneeFilter
-                    ? 'Try adjusting your search or filters' : 'Get started by creating your first task'
-                  }
-                </p>
-                {!searchTerm && !statusFilter && !priorityFilter && !assigneeFilter && (
-                  <Button
-                    onClick={() => setIsCreateModalOpen(true)}
-                    iconName="Plus"
-                    iconPosition="left"
-                    iconSize={16}
-                  >
-                    Create First Task
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
+          )}
         </div>
       </div>
       {/* Modals */}

@@ -1,0 +1,38 @@
+.task-stats-container {
+  background-color: white; /* bg-card */
+  border-radius: 0.5rem;               /* rounded-lg */
+  padding: 1.5rem;                     /* p-6 */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* shadow-card */
+}
+
+.task-stats-title {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600;    /* font-semibold */
+  color: var(--color-foreground); /* text-foreground */
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+.task-stats-chart {
+  height: 20rem; /* h-80 */
+}
+
+/* Tooltip styles */
+.custom-tooltip {
+  background-color: var(--color-card); /* bg-card */
+  border: 1px solid var(--color-border); /* border-border */
+  border-radius: 0.5rem; /* rounded-lg */
+  padding: 0.75rem; /* p-3 */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15); /* shadow-modal */
+}
+
+.tooltip-label {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500;    /* font-medium */
+  color: var(--color-foreground); /* text-foreground */
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.tooltip-item {
+  font-size: 0.875rem; /* text-sm */
+  margin: 0;
+}

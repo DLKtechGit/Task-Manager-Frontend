@@ -1,5 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import './TaskStatsBarChart.css'; // import the CSS file
 
 const TaskStatsBarChart = () => {
   const data = [
@@ -14,10 +15,10 @@ const TaskStatsBarChart = () => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload?.length) {
       return (
-        <div className="bg-card border border-border rounded-lg p-3 shadow-modal">
-          <p className="text-sm font-medium text-foreground mb-2">{label}</p>
+        <div className="custom-tooltip">
+          <p className="tooltip-label">{label}</p>
           {payload?.map((entry, index) => (
-            <p key={index} className="text-sm" style={{ color: entry?.color }}>
+            <p key={index} className="tooltip-item" style={{ color: entry?.color }}>
               {entry?.name}: {entry?.value} tasks
             </p>
           ))}
@@ -28,9 +29,9 @@ const TaskStatsBarChart = () => {
   };
 
   return (
-    <div className="bg-card rounded-lg p-6 shadow-card">
-      <h3 className="text-lg font-semibold text-foreground mb-4">Monthly Task Trends</h3>
-      <div className="h-80">
+    <div className="task-stats-container">
+      <h3 className="task-stats-title">Monthly Task Trends</h3>
+      <div className="task-stats-chart">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />

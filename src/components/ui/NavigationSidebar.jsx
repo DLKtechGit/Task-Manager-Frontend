@@ -1,78 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Icon from '../AppIcon';
 import Button from './Button';
 import './NavigationSidebar.css';
-
+ 
 const NavigationSidebar = ({ isCollapsed = false, onToggle, userRole = 'user' }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-
+ 
   const navigationItems = [
-    {
-      label: 'Dashboard',
-      path: '/dashboard',
-      icon: 'LayoutDashboard',
-      roles: ['admin', 'manager', 'user']
-    },
-    {
-      label: 'Manage Tasks',
-      path: '/manage-tasks',
-      icon: 'ClipboardList',
-      roles: ['admin', 'manager']
-    },
-    {
-      label: 'Accept Task',
-      path: '/accept-task',
-      icon: 'CheckSquare',
-      roles: ['admin', 'manager', 'user']
-    },
-    {
-      label: 'Members',
-      path: '/members',
-      icon: 'Users',
-      roles: ['admin', 'manager']
-    }
+    { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard', roles: ['admin', 'manager', 'user'] },
+    { label: 'Manage Tasks', path: '/manage-tasks', icon: 'ClipboardList', roles: ['admin', 'manager'] },
+    { label: 'Accept Task', path: '/accept-task', icon: 'CheckSquare', roles: ['admin', 'manager', 'user'] },
+    { label: 'Members', path: '/members', icon: 'Users', roles: ['admin', 'manager'] }
   ];
-
-  const filteredItems = navigationItems.filter(item => 
-    item.roles.includes(userRole)
-  );
-
+ 
+  const filteredItems = navigationItems.filter(item => item.roles.includes(userRole));
+ 
   const handleNavigation = (path) => {
     navigate(path);
     setIsMobileOpen(false);
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/sign-in');
+ 
+  const handleLogout = async () => {
+    const token = localStorage.getItem('authToken');
+    console.log(token)
+ 
+    try {
+      // Call backend logout
+      await axios.post(
+        'http://localhost:5000/api/user/logout',{},
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+ 
+      // Clear local storage
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('username');
+      localStorage.removeItem('email');
+ 
+      // Navigate to sign-in
+      navigate('/sign-in');
+ 
+    } catch (err) {
+      console.error('Logout failed:', err);
+      alert(err.response?.data?.message || 'Logout failed. Please try again.');
+    }
   };
-
+ 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileOpen(false);
-      }
+      if (window.innerWidth >= 768) setIsMobileOpen(false);
     };
-
+ 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
+ 
   useEffect(() => {
-    if (isMobileOpen) {
-      document.body.classList.add('body-overflow-hidden');
-    } else {
-      document.body.classList.remove('body-overflow-hidden');
-    }
-
-    return () => {
-      document.body.classList.remove('body-overflow-hidden');
-    };
+    if (isMobileOpen) document.body.classList.add('body-overflow-hidden');
+    else document.body.classList.remove('body-overflow-hidden');
+ 
+    return () => document.body.classList.remove('body-overflow-hidden');
   }, [isMobileOpen]);
-
+ 
   const SidebarContent = () => (
     <div className="sidebar-content">
       {/* Logo Section */}
@@ -87,7 +82,7 @@ const NavigationSidebar = ({ isCollapsed = false, onToggle, userRole = 'user' })
           </div>
         </div>
       </div>
-
+ 
       {/* User Profile Section */}
       <div className="sidebar-user">
         <div className="sidebar-user-container">
@@ -95,19 +90,15 @@ const NavigationSidebar = ({ isCollapsed = false, onToggle, userRole = 'user' })
             <Icon name="User" size={20} color="#6b7280" />
           </div>
           <div className="sidebar-user-info">
-            <p className="sidebar-user-name">
-              John Doe
-            </p>
-            <p className="sidebar-user-role">
-              {userRole}
-            </p>
+            <p className="sidebar-user-name">{localStorage.getItem('username') || 'John Doe'}</p>
+            <p className="sidebar-user-role">{userRole}</p>
           </div>
         </div>
       </div>
-
+ 
       {/* Navigation Items */}
       <nav className="sidebar-nav">
-        {filteredItems.map((item) => {
+        {filteredItems.map(item => {
           const isActive = location.pathname === item.path;
           return (
             <button
@@ -115,17 +106,13 @@ const NavigationSidebar = ({ isCollapsed = false, onToggle, userRole = 'user' })
               onClick={() => handleNavigation(item.path)}
               className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
             >
-              <Icon 
-                name={item.icon} 
-                size={18} 
-                className="sidebar-nav-icon"
-              />
+              <Icon name={item.icon} size={18} className="sidebar-nav-icon" />
               <span className="sidebar-nav-label">{item.label}</span>
             </button>
           );
         })}
       </nav>
-
+ 
       {/* Logout Section */}
       <div className="sidebar-logout">
         <Button
@@ -141,36 +128,32 @@ const NavigationSidebar = ({ isCollapsed = false, onToggle, userRole = 'user' })
       </div>
     </div>
   );
-
+ 
   return (
     <div className="navigation-sidebar">
       {/* Desktop Sidebar */}
       <aside className="sidebar-desktop">
         <SidebarContent />
       </aside>
-
+ 
       {/* Mobile Overlay */}
       {isMobileOpen && (
         <div className="sidebar-mobile-overlay">
-          <div 
-            className="sidebar-mobile-overlay-bg"
-            onClick={() => setIsMobileOpen(false)}
-          />
+          <div className="sidebar-mobile-overlay-bg" onClick={() => setIsMobileOpen(false)} />
           <aside className="sidebar-mobile">
             <SidebarContent />
           </aside>
         </div>
       )}
-
+ 
       {/* Mobile Menu Toggle */}
-      <button
-        onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="sidebar-mobile-toggle"
-      >
-        <Icon name={isMobileOpen ? "X" : "Menu"} size={20} />
+      <button onClick={() => setIsMobileOpen(!isMobileOpen)} className="sidebar-mobile-toggle">
+        <Icon name={isMobileOpen ? 'X' : 'Menu'} size={20} />
       </button>
     </div>
   );
 };
-
+ 
 export default NavigationSidebar;
+ 
+ 

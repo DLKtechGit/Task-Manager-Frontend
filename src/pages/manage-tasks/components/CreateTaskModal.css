@@ -1,0 +1,171 @@
+.create-task-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  overflow-y: auto;
+}
+
+.create-task-modal-overlay {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.create-task-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s;
+}
+
+.create-task-modal-content {
+  position: relative;
+  background-color: white; /* card */
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 42rem; /* max-w-2xl */
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Header */
+.create-task-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb; /* border */
+}
+
+.create-task-modal-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: #171717; /* foreground */
+  margin: 0;
+}
+
+/* Form */
+.create-task-modal-form {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.create-task-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .create-task-modal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.create-task-modal-full-width {
+  grid-column: 1 / -1;
+}
+
+/* File Upload */
+.create-task-modal-file-upload {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #171717; /* foreground */
+  margin-bottom: 0.5rem;
+}
+
+.create-task-modal-upload-area {
+  border: 2px dashed #e5e7eb; /* border */
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.create-task-modal-upload-input {
+  display: none;
+}
+
+.create-task-modal-upload-label {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.create-task-modal-upload-text {
+  font-size: 0.875rem;
+  color: #6b7280; /* muted-foreground */
+}
+
+/* Attachment List */
+.create-task-modal-attachments {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.create-task-modal-attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f3f4f6; /* muted */
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.create-task-modal-attachment-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.create-task-modal-attachment-name {
+  font-size: 0.875rem;
+  color: #171717; /* foreground */
+}
+
+.create-task-modal-attachment-size {
+  font-size: 0.75rem;
+  color: #6b7280; /* muted-foreground */
+}
+
+/* Footer */
+.create-task-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb; /* border */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .create-task-modal-overlay {
+    padding: 0.5rem;
+  }
+  
+  .create-task-modal-header,
+  .create-task-modal-form {
+    padding: 1rem;
+  }
+  
+  .create-task-modal-footer {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .create-task-modal-footer button {
+    width: 100%;
+  }
+}

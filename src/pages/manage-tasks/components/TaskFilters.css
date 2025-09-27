@@ -1,0 +1,152 @@
+.task-filters {
+  background-color: white; /* card */
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb; /* border */
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.task-filters-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .task-filters-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.task-filters-search {
+  flex: 1;
+  max-width: 28rem; /* max-w-md */
+}
+
+.task-filters-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .task-filters-controls {
+    flex-direction: row;
+  }
+}
+
+.task-filters-select {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .task-filters-select {
+    width: 10rem; /* sm:w-40 */
+  }
+}
+
+.task-filters-clear {
+  white-space: nowrap;
+}
+
+/* Task Count Summary */
+.task-filters-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .task-filters-summary {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.task-filters-count-card {
+  background-color: #fafafa; /* background */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb; /* border */
+}
+
+.task-filters-count-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.task-filters-count-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-filters-count-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+/* Status-specific colors */
+.task-filters-count-unassigned .task-filters-count-icon {
+  background-color: #f3f4f6; /* gray-100 */
+}
+
+.task-filters-count-unassigned .task-filters-count-dot {
+  background-color: #6b7280; /* gray-500 */
+}
+
+.task-filters-count-assigned .task-filters-count-icon {
+  background-color: #dbeafe; /* blue-100 */
+}
+
+.task-filters-count-assigned .task-filters-count-dot {
+  background-color: #3b82f6; /* blue-500 */
+}
+
+.task-filters-count-in-progress .task-filters-count-icon {
+  background-color: #fef3c7; /* yellow-100 */
+}
+
+.task-filters-count-in-progress .task-filters-count-dot {
+  background-color: #f59e0b; /* yellow-500 */
+}
+
+.task-filters-count-closed .task-filters-count-icon {
+  background-color: #d1fae5; /* green-100 */
+}
+
+.task-filters-count-closed .task-filters-count-dot {
+  background-color: #10b981; /* green-500 */
+}
+
+.task-filters-count-number {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #171717; /* foreground */
+  margin: 0;
+}
+
+.task-filters-count-label {
+  font-size: 0.875rem;
+  color: #6b7280; /* muted-foreground */
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .task-filters {
+    padding: 1rem;
+  }
+  
+  .task-filters-summary {
+    grid-template-columns: 1fr;
+  }
+}

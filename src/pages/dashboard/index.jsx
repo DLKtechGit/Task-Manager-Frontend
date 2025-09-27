@@ -5,6 +5,7 @@ import TaskCountCard from './components/TaskCountCard';
 import TaskStatsPieChart from './components/TaskStatsPieChart';
 import TaskStatsBarChart from './components/TaskStatsBarChart';
 import RecentTasksList from './components/RecentTasksList';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const userRole = localStorage.getItem('userRole') || 'user';
@@ -49,46 +50,44 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="dashboard">
       <NavigationSidebar userRole={userRole} onToggle={() => {}} />
-      <div className="md:ml-60">
-        <div className="p-6 md:p-8">
-          <BreadcrumbNavigation />
-          
-          {/* Header Section */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">
-              Dashboard
-            </h1>
-            <p className="text-muted-foreground">
-              Welcome back! Here's an overview of your project activities and team performance.
-            </p>
-          </div>
-
-          {/* Task Count Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-            {taskCounts?.map((task, index) => (
-              <TaskCountCard
-                key={index}
-                title={task?.title}
-                count={task?.count}
-                icon={task?.icon}
-                color={task?.color}
-                bgColor={task?.bgColor}
-                textColor={task?.textColor}
-              />
-            ))}
-          </div>
-
-          {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <TaskStatsPieChart />
-            <TaskStatsBarChart />
-          </div>
-
-          {/* Recent Tasks Section */}
-          <RecentTasksList />
+      <div className="dashboard-main">
+        <BreadcrumbNavigation />
+        
+        {/* Header Section */}
+        <div className="dashboard-header">
+          <h1 className="dashboard-title">
+            Dashboard
+          </h1>
+          <p className="dashboard-subtitle">
+            Welcome back! Here's an overview of your project activities and team performance.
+          </p>
         </div>
+
+        {/* Task Count Cards */}
+        <div className="dashboard-cards-grid">
+          {taskCounts.map((task, index) => (
+            <TaskCountCard
+              key={index}
+              title={task.title}
+              count={task.count}
+              icon={task.icon}
+              color={task.color}
+              bgColor={task.bgColor}
+              textColor={task.textColor}
+            />
+          ))}
+        </div>
+
+        {/* Charts Section */}
+        <div className="dashboard-charts-grid">
+          <TaskStatsPieChart />
+          <TaskStatsBarChart />
+        </div>
+
+        {/* Recent Tasks Section */}
+        <RecentTasksList />
       </div>
     </div>
   );

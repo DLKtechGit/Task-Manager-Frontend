@@ -3,6 +3,7 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
+import './CreateTaskModal.css';
 
 const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
   const [formData, setFormData] = useState({
@@ -146,14 +147,14 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-500 overflow-y-auto">
-      <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={handleClose} />
+    <div className="create-task-modal">
+      <div className="create-task-modal-overlay">
+        <div className="create-task-modal-backdrop" onClick={handleClose} />
         
-        <div className="relative bg-card rounded-lg shadow-modal w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="create-task-modal-content">
           {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b border-border">
-            <h2 className="text-xl font-semibold text-foreground">Create New Task</h2>
+          <div className="create-task-modal-header">
+            <h2 className="create-task-modal-title">Create New Task</h2>
             <Button
               variant="ghost"
               size="sm"
@@ -164,9 +165,9 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="md:col-span-2">
+          <form onSubmit={handleSubmit} className="create-task-modal-form">
+            <div className="create-task-modal-grid">
+              <div className="create-task-modal-full-width">
                 <Input
                   label="Task Title"
                   type="text"
@@ -178,7 +179,7 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
                 />
               </div>
 
-              <div className="md:col-span-2">
+              <div className="create-task-modal-full-width">
                 <Input
                   label="Task Description"
                   type="text"
@@ -235,7 +236,7 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
                 />
               </div>
 
-              <div className="md:col-span-2">
+              <div className="create-task-modal-full-width">
                 <Input
                   label="Project Name"
                   type="text"
@@ -247,7 +248,7 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
                 />
               </div>
 
-              <div className="md:col-span-2">
+              <div className="create-task-modal-full-width">
                 <Input
                   label="Notes"
                   type="text"
@@ -258,24 +259,24 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
               </div>
 
               {/* File Upload */}
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-foreground mb-2">
+              <div className="create-task-modal-full-width">
+                <label className="create-task-modal-file-upload">
                   Attachments
                 </label>
-                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
+                <div className="create-task-modal-upload-area">
                   <input
                     type="file"
                     multiple
                     onChange={handleFileUpload}
-                    className="hidden"
+                    className="create-task-modal-upload-input"
                     id="file-upload"
                   />
                   <label
                     htmlFor="file-upload"
-                    className="cursor-pointer flex flex-col items-center space-y-2"
+                    className="create-task-modal-upload-label"
                   >
-                    <Icon name="Upload" size={32} className="text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">
+                    <Icon name="Upload" size={32} className="create-task-modal-upload-text" />
+                    <span className="create-task-modal-upload-text">
                       Click to upload files or drag and drop
                     </span>
                   </label>
@@ -283,13 +284,13 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
 
                 {/* Attachment List */}
                 {formData?.attachments?.length > 0 && (
-                  <div className="mt-4 space-y-2">
+                  <div className="create-task-modal-attachments">
                     {formData?.attachments?.map((file, index) => (
-                      <div key={index} className="flex items-center justify-between bg-muted rounded-lg p-3">
-                        <div className="flex items-center space-x-2">
-                          <Icon name="File" size={16} className="text-muted-foreground" />
-                          <span className="text-sm text-foreground">{file?.name}</span>
-                          <span className="text-xs text-muted-foreground">
+                      <div key={index} className="create-task-modal-attachment">
+                        <div className="create-task-modal-attachment-info">
+                          <Icon name="File" size={16} className="create-task-modal-upload-text" />
+                          <span className="create-task-modal-attachment-name">{file?.name}</span>
+                          <span className="create-task-modal-attachment-size">
                             ({(file?.size / 1024)?.toFixed(1)} KB)
                           </span>
                         </div>
@@ -308,7 +309,7 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask, teamMembers }) => {
             </div>
 
             {/* Footer */}
-            <div className="flex items-center justify-end space-x-3 pt-6 border-t border-border">
+            <div className="create-task-modal-footer">
               <Button
                 variant="outline"
                 onClick={handleClose}

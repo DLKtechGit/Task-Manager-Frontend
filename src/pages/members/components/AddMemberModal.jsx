@@ -3,8 +3,9 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
-
-const AddMemberModal = ({ isOpen, onClose, onAddMember }) => {
+import './AddMemberModel.css'; // Import CSS
+ 
+const AddMemberModal = ({ isOpen, onClose, onAddMember, showToast }) => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -16,13 +17,13 @@ const AddMemberModal = ({ isOpen, onClose, onAddMember }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-
+ 
   const roleOptions = [
     { value: 'user', label: 'User' },
     { value: 'manager', label: 'Manager' },
     { value: 'admin', label: 'Admin' }
   ];
-
+ 
   const departmentOptions = [
     { value: 'Engineering', label: 'Engineering' },
     { value: 'Design', label: 'Design' },
@@ -31,83 +32,55 @@ const AddMemberModal = ({ isOpen, onClose, onAddMember }) => {
     { value: 'HR', label: 'Human Resources' },
     { value: 'Finance', label: 'Finance' }
   ];
-
+ 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors?.[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
-
+ 
   const validateForm = () => {
     const newErrors = {};
-
-    if (!formData?.username?.trim()) {
-      newErrors.username = 'Username is required';
-    }
-
-    if (!formData?.email?.trim()) {
-      newErrors.email = 'Email is required';
-    } else if (!/\S+@\S+\.\S+/.test(formData?.email)) {
-      newErrors.email = 'Please enter a valid email';
-    }
-
-    if (!formData?.password) {
-      newErrors.password = 'Password is required';
-    } else if (formData?.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
-    }
-
-    if (!formData?.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData?.password !== formData?.confirmPassword) {
+ 
+    if (!formData?.username?.trim()) newErrors.username = 'Username is required';
+    if (!formData?.email?.trim()) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
+    if (!formData.password) newErrors.password = 'Password is required';
+    else if (formData.password.length < 6) newErrors.password = 'Password min 6 chars';
+    if (!formData.confirmPassword) newErrors.confirmPassword = 'Confirm password';
+    else if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = 'Passwords do not match';
-    }
-
-    if (!formData?.department) {
-      newErrors.department = 'Department is required';
-    }
-
+    if (!formData.department) newErrors.department = 'Department is required';
+ 
     setErrors(newErrors);
-    return Object.keys(newErrors)?.length === 0;
+    return Object.keys(newErrors).length === 0;
   };
-
+ 
   const handleSubmit = async (e) => {
-    e?.preventDefault();
-    
+    e.preventDefault();
     if (!validateForm()) return;
-
+ 
     setIsLoading(true);
-    
+ 
     try {
-      // Prepare form data for backend
       const backendData = new FormData();
       backendData.append('username', formData.username);
       backendData.append('email', formData.email);
       backendData.append('password', formData.password);
       backendData.append('role', formData.role);
       backendData.append('department', formData.department);
-      
-      // If avatar URL is provided, handle file upload logic here
-      if (formData.avatar) {
-        // For now, we'll just add the URL as a string
-        // In a real app, you might want to upload the actual file
-        backendData.append('avatar', formData.avatar);
-      }
-
-      // Send request to backend
-      const response = await fetch('http://192.168.1.77:5000/api/register', {
+      if (formData.avatar) backendData.append('avatar', formData.avatar);
+ 
+      const response = await fetch('http://localhost:5000/api/register', {
         method: 'POST',
         body: backendData
       });
-
+ 
       const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || 'Failed to register user');
-      }
-
-      // Create frontend member object with backend response
+ 
+      if (!response.ok) throw new Error(result.message || 'Failed to register');
+ 
       const newMember = {
         id: result.user._id || Date.now(),
         name: result.user.username,
@@ -122,10 +95,10 @@ const AddMemberModal = ({ isOpen, onClose, onAddMember }) => {
         tasksInProgress: 0,
         lastActive: null
       };
-
+ 
       await onAddMember(newMember);
-      
-      // Reset form
+      showToast('Member added successfully!', 'success');
+ 
       setFormData({
         username: '',
         email: '',
@@ -135,131 +108,93 @@ const AddMemberModal = ({ isOpen, onClose, onAddMember }) => {
         department: '',
         avatar: ''
       });
-      
       onClose();
     } catch (error) {
-      console.error('Error adding member:', error);
-      setErrors({ submit: error.message });
+      console.error(error);
+      showToast(error.message, 'error');
     } finally {
       setIsLoading(false);
     }
   };
-
+ 
   if (!isOpen) return null;
-
+ 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black bg-opacity-50"
-        onClick={onClose}
-      />
-      {/* Modal */}
-      <div className="relative bg-card border border-border rounded-lg shadow-modal w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <h2 className="text-lg font-semibold text-foreground">Add New Member</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="h-8 w-8"
-          >
+    <div className="modal-overlay">
+      <div className="modal-backdrop" onClick={onClose}></div>
+      <div className="modal-content">
+        <div className="modal-header">
+          <h2>Add New Member</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} className="close-btn">
             <Icon name="X" size={16} />
           </Button>
         </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+ 
+        <form onSubmit={handleSubmit} className="modal-form">
           <Input
             label="Username"
             type="text"
             placeholder="Enter username"
-            value={formData?.username}
+            value={formData.username}
             onChange={(e) => handleInputChange('username', e.target.value)}
-            error={errors?.username}
+            error={errors.username}
             required
           />
-
           <Input
-            label="Email Address"
+            label="Email"
             type="email"
-            placeholder="Enter email address"
-            value={formData?.email}
+            placeholder="Enter email"
+            value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
-            error={errors?.email}
+            error={errors.email}
             required
           />
-
           <Input
             label="Password"
             type="password"
             placeholder="Enter password"
-            value={formData?.password}
+            value={formData.password}
             onChange={(e) => handleInputChange('password', e.target.value)}
-            error={errors?.password}
+            error={errors.password}
             required
           />
-
           <Input
             label="Confirm Password"
             type="password"
             placeholder="Confirm password"
-            value={formData?.confirmPassword}
+            value={formData.confirmPassword}
             onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-            error={errors?.confirmPassword}
+            error={errors.confirmPassword}
             required
           />
-
           <Select
             label="Role"
             options={roleOptions}
-            value={formData?.role}
-            onChange={(value) => handleInputChange('role', value)}
+            value={formData.role}
+            onChange={(val) => handleInputChange('role', val)}
             required
           />
-
           <Select
             label="Department"
             options={departmentOptions}
-            value={formData?.department}
-            onChange={(value) => handleInputChange('department', value)}
-            error={errors?.department}
+            value={formData.department}
+            onChange={(val) => handleInputChange('department', val)}
+            error={errors.department}
             required
           />
-
           <Input
             label="Avatar URL (Optional)"
             type="url"
             placeholder="Enter avatar image URL"
-            value={formData?.avatar}
+            value={formData.avatar}
             onChange={(e) => handleInputChange('avatar', e.target.value)}
-            description="Leave empty to generate a default avatar"
           />
-
-          {errors?.submit && (
-            <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-              <p className="text-destructive text-sm">{errors.submit}</p>
-            </div>
-          )}
-
-          {/* Actions */}
-          <div className="flex justify-end space-x-3 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onClose}
-              disabled={isLoading}
-            >
+ 
+          <div className="modal-actions">
+            <Button type="button" variant="outline" onClick={onClose} disabled={isLoading}>
               Cancel
             </Button>
-            <Button
-              type="submit"
-              loading={isLoading}
-              iconName="UserPlus"
-              iconPosition="left"
-              iconSize={16}
-            >
+            <Button type="submit" loading={isLoading} iconName="UserPlus" iconPosition="left" iconSize={16}>
               Add Member
             </Button>
           </div>
@@ -268,5 +203,7 @@ const AddMemberModal = ({ isOpen, onClose, onAddMember }) => {
     </div>
   );
 };
-
+ 
 export default AddMemberModal;
+ 
+ 
