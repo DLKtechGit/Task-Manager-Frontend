@@ -17,102 +17,165 @@ const ManageTasksPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Mock data for tasks
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      taskName: "Implement User Authentication",
-      description: "Create secure login and registration system with JWT tokens and password encryption",
-      status: "in-progress",
-      priority: "high",
-      assignedTo: "Sarah Johnson",
-      dueDate: "2025-01-15",
-      clientName: "TechCorp Solutions",
-      projectName: "E-commerce Platform",
-      createdBy: "John Doe",
-      createdAt: "2025-01-10T09:00:00Z",
-      notes: "Ensure compliance with security standards and implement two-factor authentication",
-      attachments: []
-    },
-    {
-      id: 2,
-      taskName: "Design Database Schema",
-      description: "Create comprehensive database design for the new CRM system including all entities and relationships",
-      status: "assigned",
-      priority: "medium",
-      assignedTo: "Mike Chen",
-      dueDate: "2025-01-20",
-      clientName: "Business Solutions Inc",
-      projectName: "CRM System",
-      createdBy: "John Doe",
-      createdAt: "2025-01-08T14:30:00Z",
-      notes: "Focus on scalability and performance optimization",
-      attachments: []
-    },
-    {
-      id: 3,
-      taskName: "API Integration Testing",
-      description: "Test all third-party API integrations and ensure proper error handling",
-      status: "closed",
-      priority: "low",
-      assignedTo: "Emily Rodriguez",
-      dueDate: "2025-01-12",
-      clientName: "StartupXYZ",
-      projectName: "Mobile App Backend",
-      createdBy: "John Doe",
-      createdAt: "2025-01-05T11:15:00Z",
-      notes: "All tests passed successfully",
-      attachments: []
-    },
-    {
-      id: 4,
-      taskName: "UI/UX Wireframes",
-      description: "Create detailed wireframes for the admin dashboard including all user flows",
-      status: "unassigned",
-      priority: "medium",
-      assignedTo: "David Kim",
-      dueDate: "2025-01-25",
-      clientName: "Enterprise Corp",
-      projectName: "Admin Dashboard",
-      createdBy: "John Doe",
-      createdAt: "2025-01-09T16:45:00Z",
-      notes: "Include responsive design considerations",
-      attachments: []
-    },
-    {
-      id: 5,
-      taskName: "Performance Optimization",
-      description: "Optimize application performance and reduce loading times by at least 30%",
-      status: "in-progress",
-      priority: "high",
-      assignedTo: "Alex Thompson",
-      dueDate: "2025-01-18",
-      clientName: "TechCorp Solutions",
-      projectName: "E-commerce Platform",
-      createdBy: "John Doe",
-      createdAt: "2025-01-07T13:20:00Z",
-      notes: "Focus on database queries and image optimization",
-      attachments: []
-    },
-    {
-      id: 6,
-      taskName: "Security Audit",
-      description: "Conduct comprehensive security audit and fix any vulnerabilities found",
-      status: "assigned",
-      priority: "high",
-      assignedTo: "Lisa Wang",
-      dueDate: "2025-01-22",
-      clientName: "Financial Services Ltd",
-      projectName: "Banking Application",
-      createdBy: "John Doe",
-      createdAt: "2025-01-06T10:00:00Z",
-      notes: "Include penetration testing and code review",
-      attachments: []
+  // Fetch tasks from backend
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('authToken');
+      
+      const response = await fetch('http://192.168.1.77:5000/api/admin/get/alltask', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error('Access denied. Admin privileges required.');
+        }
+        throw new Error('Failed to fetch tasks');
+      }
+      
+      const backendTasks = await response.json();
+      
+      // Transform backend data to frontend format
+      const transformedTasks = backendTasks.map((task, index) => ({
+        id: task._id || index + 1,
+        taskName: task.task_name || 'Unnamed Task',
+        description: task.description || 'No description available',
+        status: task.status || 'unassigned',
+        priority: task.priority || 'medium',
+        assignedTo: task.assigned_user?.username || 'Unassigned',
+        dueDate: task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : 'No due date',
+        clientName: task.client_name || 'No client',
+        projectName: task.project_name || 'No project',
+        createdBy: task.created_by || 'Admin',
+        createdAt: task.created_at || new Date().toISOString(),
+        notes: task.notes || '',
+        attachments: task.attachments || [],
+        // Include backend fields for details
+        assigned_user: task.assigned_user,
+        originalData: task
+      }));
+      
+      setTasks(transformedTasks);
+      setError('');
+    } catch (err) {
+      console.error('Error fetching tasks:', err);
+      setError(err.message || 'Failed to load tasks. Using demo data.');
+      // Fallback to demo data only if it's not an auth error
+      if (!err.message.includes('Access denied')) {
+        loadDemoData();
+      }
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
 
-  // Mock team members data
+  // Demo data fallback (only used if backend fails and it's not an auth error)
+  const loadDemoData = () => {
+    const demoTasks = [
+      {
+        id: 1,
+        taskName: "Implement User Authentication",
+        description: "Create secure login and registration system with JWT tokens and password encryption",
+        status: "in-progress",
+        priority: "high",
+        assignedTo: "Sarah Johnson",
+        dueDate: "2025-01-15",
+        clientName: "TechCorp Solutions",
+        projectName: "E-commerce Platform",
+        createdBy: "John Doe",
+        createdAt: "2025-01-10T09:00:00Z",
+        notes: "Ensure compliance with security standards and implement two-factor authentication",
+        attachments: []
+      },
+      {
+        id: 2,
+        taskName: "Design Database Schema",
+        description: "Create comprehensive database design for the new CRM system including all entities and relationships",
+        status: "assigned",
+        priority: "medium",
+        assignedTo: "Mike Chen",
+        dueDate: "2025-01-20",
+        clientName: "Business Solutions Inc",
+        projectName: "CRM System",
+        createdBy: "John Doe",
+        createdAt: "2025-01-08T14:30:00Z",
+        notes: "Focus on scalability and performance optimization",
+        attachments: []
+      },
+      {
+        id: 3,
+        taskName: "API Integration Testing",
+        description: "Test all third-party API integrations and ensure proper error handling",
+        status: "closed",
+        priority: "low",
+        assignedTo: "Emily Rodriguez",
+        dueDate: "2025-01-12",
+        clientName: "StartupXYZ",
+        projectName: "Mobile App Backend",
+        createdBy: "John Doe",
+        createdAt: "2025-01-05T11:15:00Z",
+        notes: "All tests passed successfully",
+        attachments: []
+      },
+      {
+        id: 4,
+        taskName: "UI/UX Wireframes",
+        description: "Create detailed wireframes for the admin dashboard including all user flows",
+        status: "unassigned",
+        priority: "medium",
+        assignedTo: "Unassigned",
+        dueDate: "2025-01-25",
+        clientName: "Enterprise Corp",
+        projectName: "Admin Dashboard",
+        createdBy: "John Doe",
+        createdAt: "2025-01-09T16:45:00Z",
+        notes: "Include responsive design considerations",
+        attachments: []
+      },
+      {
+        id: 5,
+        taskName: "Performance Optimization",
+        description: "Optimize application performance and reduce loading times by at least 30%",
+        status: "in-progress",
+        priority: "high",
+        assignedTo: "Alex Thompson",
+        dueDate: "2025-01-18",
+        clientName: "TechCorp Solutions",
+        projectName: "E-commerce Platform",
+        createdBy: "John Doe",
+        createdAt: "2025-01-07T13:20:00Z",
+        notes: "Focus on database queries and image optimization",
+        attachments: []
+      },
+      {
+        id: 6,
+        taskName: "Security Audit",
+        description: "Conduct comprehensive security audit and fix any vulnerabilities found",
+        status: "assigned",
+        priority: "high",
+        assignedTo: "Lisa Wang",
+        dueDate: "2025-01-22",
+        clientName: "Financial Services Ltd",
+        projectName: "Banking Application",
+        createdBy: "John Doe",
+        createdAt: "2025-01-06T10:00:00Z",
+        notes: "Include penetration testing and code review",
+        attachments: []
+      }
+    ];
+    setTasks(demoTasks);
+  };
+
+  // Mock team members data (you might want to fetch this from your backend too)
   const teamMembers = [
     { id: 1, name: "Sarah Johnson", email: "sarah.johnson@company.com", role: "Frontend Developer" },
     { id: 2, name: "Mike Chen", email: "mike.chen@company.com", role: "Backend Developer" },
@@ -148,18 +211,38 @@ const ManageTasksPage = () => {
   }, [tasks]);
 
   const handleCreateTask = async (newTask) => {
-    setTasks(prev => [...prev, newTask]);
+    // Note: You'll need to create a backend endpoint for adding tasks
+    // For now, we'll just refresh the list
+    await fetchTasks();
   };
 
-  const handleUpdateStatus = (taskId, newStatus) => {
-    setTasks(prev => prev.map(task => 
-      task?.id === taskId ? { ...task, status: newStatus } : task
-    ));
-  };
+  const handleUpdateStatus = async (taskId, newStatus) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      
+      // Update task status in backend - you'll need to create this endpoint
+      const response = await fetch(`http://192.168.1.77:5000/api/admin/tasks/${taskId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
 
-  const handleEditTask = (task) => {
-    setSelectedTask(task);
-    setIsCreateModalOpen(true);
+      if (response.ok) {
+        // Refresh the list to get updated data from backend
+        await fetchTasks();
+      } else {
+        throw new Error('Failed to update task status');
+      }
+    } catch (error) {
+      console.error('Error updating task status:', error);
+      // Fallback to local update if backend fails
+      setTasks(prev => prev.map(task => 
+        task?.id === taskId ? { ...task, status: newStatus } : task
+      ));
+    }
   };
 
   const handleViewDetails = (task) => {
@@ -175,8 +258,20 @@ const ManageTasksPage = () => {
   };
 
   useEffect(() => {
+    fetchTasks();
     document.title = 'Manage Tasks - TaskFlow Manager';
   }, []);
+
+  if (loading) {
+    return (
+      <div className="manage-tasks-loading">
+        <div className="manage-tasks-loading-content">
+          <Icon name="Loader" size={32} className="manage-tasks-loading-icon" />
+          <p className="manage-tasks-loading-text">Loading tasks...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="manage-tasks-page">
@@ -206,6 +301,23 @@ const ManageTasksPage = () => {
             </div>
           </div>
 
+          {error && (
+            <div className="manage-tasks-error">
+              <Icon name="AlertCircle" size={20} className="manage-tasks-error-icon" />
+              <p className="manage-tasks-error-text">{error}</p>
+              {error.includes('Access denied') && (
+                <Button 
+                  onClick={() => window.location.href = '/dashboard'}
+                  variant="outline"
+                  size="sm"
+                  className="manage-tasks-error-button"
+                >
+                  Back to Dashboard
+                </Button>
+              )}
+            </div>
+          )}
+
           {/* Filters */}
           <TaskFilters
             searchTerm={searchTerm}
@@ -231,9 +343,9 @@ const ManageTasksPage = () => {
             
             <TaskTable
               tasks={filteredTasks}
-              onEditTask={handleEditTask}
               onUpdateStatus={handleUpdateStatus}
               onViewDetails={handleViewDetails}
+              // Remove edit functionality as requested
             />
           </div>
 

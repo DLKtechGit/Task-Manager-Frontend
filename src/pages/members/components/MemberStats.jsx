@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
+import './MemberStats.css';
 
 const MemberStats = ({ members }) => {
   const totalMembers = members?.length;
@@ -14,57 +15,57 @@ const MemberStats = ({ members }) => {
       label: 'Total Members',
       value: totalMembers,
       icon: 'Users',
-      color: 'text-primary',
-      bgColor: 'bg-primary/10'
+      color: 'member-stats-icon-text-primary',
+      bgColor: 'member-stats-icon-primary'
     },
     {
       label: 'Active',
       value: activeMembers,
       icon: 'UserCheck',
-      color: 'text-success',
-      bgColor: 'bg-success/10'
+      color: 'member-stats-icon-text-success',
+      bgColor: 'member-stats-icon-success'
     },
     {
       label: 'Pending',
       value: pendingMembers,
       icon: 'UserX',
-      color: 'text-warning',
-      bgColor: 'bg-warning/10'
+      color: 'member-stats-icon-text-warning',
+      bgColor: 'member-stats-icon-warning'
     },
     {
       label: 'Admins',
       value: adminCount,
       icon: 'Shield',
-      color: 'text-error',
-      bgColor: 'bg-error/10'
+      color: 'member-stats-icon-text-error',
+      bgColor: 'member-stats-icon-error'
     },
     {
       label: 'Managers',
       value: managerCount,
       icon: 'Crown',
-      color: 'text-warning',
-      bgColor: 'bg-warning/10'
+      color: 'member-stats-icon-text-warning',
+      bgColor: 'member-stats-icon-warning'
     },
     {
       label: 'Users',
       value: userCount,
       icon: 'User',
-      color: 'text-success',
-      bgColor: 'bg-success/10'
+      color: 'member-stats-icon-text-success',
+      bgColor: 'member-stats-icon-success'
     }
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+    <div className="member-stats">
       {stats?.map((stat, index) => (
-        <div key={index} className="bg-card border border-border rounded-lg p-4">
-          <div className="flex items-center space-x-3">
-            <div className={`w-10 h-10 rounded-lg ${stat?.bgColor} flex items-center justify-center`}>
+        <div key={index} className="member-stats-card">
+          <div className="member-stats-content">
+            <div className={`member-stats-icon-container ${stat?.bgColor}`}>
               <Icon name={stat?.icon} size={20} className={stat?.color} />
             </div>
-            <div>
-              <div className="text-2xl font-bold text-foreground">{stat?.value}</div>
-              <div className="text-xs text-muted-foreground">{stat?.label}</div>
+            <div className="member-stats-info">
+              <div className="member-stats-value">{stat?.value}</div>
+              <div className="member-stats-label">{stat?.label}</div>
             </div>
           </div>
         </div>

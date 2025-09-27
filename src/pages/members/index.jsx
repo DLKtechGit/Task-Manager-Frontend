@@ -11,6 +11,7 @@ import DeleteMemberModal from './components/DeleteMemberModal';
 import BulkActionsBar from './components/BulkActionsBar';
 import MemberStats from './components/MemberStats';
 import Icon from '../../components/AppIcon';
+import './MembersPage.css';
 
 const MembersPage = () => {
   const [members, setMembers] = useState([]);
@@ -32,43 +33,61 @@ const MembersPage = () => {
   const fetchMembers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://192.168.1.77:5000/api/users');
+      const token = localStorage.getItem('authToken');
+      
+      const response = await fetch('http://192.168.1.77:5000/api/admin/get/allUsers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log("usersss",response)
       
       if (!response.ok) {
+        
+        if (response.status === 403) {
+          throw new Error('Access denied. Admin privileges required.');
+        }
         throw new Error('Failed to fetch members');
       }
       
       const users = await response.json();
       
-      // Transform backend data to frontend format
+      // Transform backend data to frontend format using the actual backend structure
       const transformedMembers = users.map(user => ({
         id: user._id,
         name: user.username,
         email: user.email,
         role: user.role,
-        department: user.department || '',
-        status: 'active', // You might want to add status field to your backend
+        department: user.department || 'Not Assigned',
+        status: user.activeStatus === 'Active' ? 'active' : 'inactive',
         avatar: user.profile_pic || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.username}`,
-        joinedDate: new Date(user.createdAt || Date.now()).toLocaleDateString(),
-        lastActive: 'Recently',
-        tasksAssigned: 0, // You might want to add these fields to your backend
-        tasksCompleted: 0,
-        tasksInProgress: 0
+        joinedDate: new Date(user.joinDate || user.createdAt || Date.now()).toLocaleDateString(),
+        lastActive: user.lastActive ? new Date(user.lastActive).toLocaleDateString() : 'Never',
+        tasksAssigned: user.totalTasks || 0,
+        tasksCompleted: user.completedTasks || 0,
+        tasksInProgress: user.inProgressTasks || 0,
+        // Include backend fields for editing
+        originalData: user
       }));
       
       setMembers(transformedMembers);
       setError('');
     } catch (err) {
       console.error('Error fetching members:', err);
-      setError('Failed to load members. Using demo data.');
-      // Fallback to demo data
-      loadDemoData();
+      setError(err.message || 'Failed to load members. Please check your admin privileges.');
+      // Fallback to demo data only if it's not an auth error
+      if (!err.message.includes('Access denied')) {
+        loadDemoData();
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Demo data fallback
+  // Demo data fallback (only used if backend fails and it's not an auth error)
   const loadDemoData = () => {
     const demoMembers = [
       {
@@ -157,8 +176,8 @@ const MembersPage = () => {
   };
 
   const handleAddMember = async (newMember) => {
-    setMembers(prev => [...prev, newMember]);
-    // Refresh the list to get data from backend
+    // Note: You'll need to create a backend endpoint for adding users
+    // For now, we'll just refresh the list
     await fetchMembers();
   };
 
@@ -169,18 +188,21 @@ const MembersPage = () => {
 
   const handleUpdateMember = async (updatedMember) => {
     try {
-      // Update member in backend
-      const response = await fetch(`http://192.168.1.77:5000/api/users/${updatedMember.id}`, {
+      const token = localStorage.getItem('authToken');
+      
+      // Update member in backend - you'll need to create this endpoint
+      const response = await fetch(`http://192.168.1.77:5000/api/admin/users/${updatedMember.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           username: updatedMember.name,
           email: updatedMember.email,
           role: updatedMember.role,
           department: updatedMember.department,
-          status: updatedMember.status
+          activeStatus: updatedMember.status === 'active' ? 'Active' : 'Inactive'
         })
       });
 
@@ -188,12 +210,8 @@ const MembersPage = () => {
         throw new Error('Failed to update member');
       }
 
-      // Update local state
-      setMembers(prev => 
-        prev.map(member => 
-          member.id === updatedMember.id ? updatedMember : member
-        )
-      );
+      // Refresh the list to get updated data from backend
+      await fetchMembers();
     } catch (error) {
       console.error('Error updating member:', error);
       // Fallback to local update if backend fails
@@ -212,17 +230,22 @@ const MembersPage = () => {
 
   const handleConfirmDelete = async (memberId) => {
     try {
-      // Delete from backend
-      const response = await fetch(`http://192.168.1.77:5000/api/users/${memberId}`, {
-        method: 'DELETE'
+      const token = localStorage.getItem('authToken');
+      
+      // Delete from backend - you'll need to create this endpoint
+      const response = await fetch(`http://192.168.1.77:5000/api/admin/users/${memberId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (!response.ok) {
         throw new Error('Failed to delete member');
       }
 
-      // Update local state
-      setMembers(prev => prev.filter(member => member.id !== memberId));
+      // Refresh the list to get updated data from backend
+      await fetchMembers();
       setSelectedMembers(prev => prev.filter(id => id !== memberId));
     } catch (error) {
       console.error('Error deleting member:', error);
@@ -239,13 +262,16 @@ const MembersPage = () => {
 
   const handleBulkRoleChange = async (newRole) => {
     try {
-      // Update bulk roles in backend
+      const token = localStorage.getItem('authToken');
+      
+      // Update bulk roles in backend - you'll need to create this endpoint
       await Promise.all(
         selectedMembers.map(async (memberId) => {
-          const response = await fetch(`http://192.168.1.77:5000/api/users/${memberId}`, {
+          const response = await fetch(`http://192.168.1.77:5000/api/admin/users/${memberId}/role`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({ role: newRole })
           });
@@ -253,14 +279,8 @@ const MembersPage = () => {
         })
       );
 
-      // Update local state
-      setMembers(prev => 
-        prev.map(member => 
-          selectedMembers.includes(member.id) 
-            ? { ...member, role: newRole }
-            : member
-        )
-      );
+      // Refresh the list to get updated data from backend
+      await fetchMembers();
       setSelectedMembers([]);
     } catch (error) {
       console.error('Error in bulk role change:', error);
@@ -277,32 +297,62 @@ const MembersPage = () => {
   };
 
   const handleBulkStatusChange = async (newStatus) => {
-    setMembers(prev => 
-      prev.map(member => 
-        selectedMembers.includes(member.id) 
-          ? { ...member, status: newStatus }
-          : member
-      )
-    );
-    setSelectedMembers([]);
-  };
-
-  const handleBulkDelete = async () => {
     try {
-      // Bulk delete from backend
+      const token = localStorage.getItem('authToken');
+      
+      // Update bulk status in backend - you'll need to create this endpoint
       await Promise.all(
         selectedMembers.map(async (memberId) => {
-          const response = await fetch(`http://192.168.1.77:5000/api/users/${memberId}`, {
-            method: 'DELETE'
+          const response = await fetch(`http://192.168.1.77:5000/api/admin/users/${memberId}/status`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ 
+              activeStatus: newStatus === 'active' ? 'Active' : 'Inactive' 
+            })
           });
           return response.ok;
         })
       );
 
-      // Update local state
+      // Refresh the list to get updated data from backend
+      await fetchMembers();
+      setSelectedMembers([]);
+    } catch (error) {
+      console.error('Error in bulk status change:', error);
+      // Fallback to local update
       setMembers(prev => 
-        prev.filter(member => !selectedMembers.includes(member.id))
+        prev.map(member => 
+          selectedMembers.includes(member.id) 
+            ? { ...member, status: newStatus }
+            : member
+        )
       );
+      setSelectedMembers([]);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      
+      // Bulk delete from backend - you'll need to create this endpoint
+      await Promise.all(
+        selectedMembers.map(async (memberId) => {
+          const response = await fetch(`http://192.168.1.77:5000/api/admin/users/${memberId}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          });
+          return response.ok;
+        })
+      );
+
+      // Refresh the list to get updated data from backend
+      await fetchMembers();
       setSelectedMembers([]);
     } catch (error) {
       console.error('Error in bulk delete:', error);
@@ -321,27 +371,27 @@ const MembersPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Icon name="Loader" size={32} className="animate-spin mx-auto mb-4" />
-          <p className="text-foreground">Loading members...</p>
+      <div className="members-page-loading">
+        <div className="members-page-loading-content">
+          <Icon name="Loader" size={32} className="members-page-loading-icon" />
+          <p className="members-page-loading-text">Loading members...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="members-page">
       <NavigationSidebar userRole={currentUserRole} onToggle={() => {}} />
-      <div className="md:ml-60">
-        <div className="p-6">
+      <div className="members-page-content">
+        <div className="members-page-container">
           <BreadcrumbNavigation />
           
           {/* Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground mb-2">Team Members</h1>
-              <p className="text-muted-foreground">
+          <div className="members-page-header">
+            <div className="members-page-header-info">
+              <h1 className="members-page-title">Team Members</h1>
+              <p className="members-page-subtitle">
                 Manage your team members, roles, and permissions
               </p>
             </div>
@@ -350,15 +400,26 @@ const MembersPage = () => {
               iconName="UserPlus"
               iconPosition="left"
               iconSize={18}
-              className="mt-4 sm:mt-0"
+              className="members-page-add-button"
             >
               Add Member
             </Button>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-warning/10 border border-warning/20 rounded-md">
-              <p className="text-warning text-sm">{error}</p>
+            <div className="members-page-error">
+              <Icon name="AlertCircle" size={20} className="members-page-error-icon" />
+              <p className="members-page-error-text">{error}</p>
+              {error.includes('Access denied') && (
+                <Button 
+                  onClick={() => window.location.href = '/dashboard'}
+                  variant="outline"
+                  size="sm"
+                  className="members-page-error-button"
+                >
+                  Back to Dashboard
+                </Button>
+              )}
             </div>
           )}
 
@@ -391,7 +452,7 @@ const MembersPage = () => {
 
           {/* Select All Checkbox */}
           {filteredMembers.length > 0 && (
-            <div className="mb-4">
+            <div className="members-page-select-all">
               <Checkbox
                 label={`Select all ${filteredMembers.length} members`}
                 checked={isAllSelected}
@@ -403,14 +464,14 @@ const MembersPage = () => {
 
           {/* Members Grid */}
           {filteredMembers.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="members-grid">
               {filteredMembers.map((member) => (
-                <div key={member.id} className="relative">
-                  <div className="absolute top-4 left-4 z-10">
+                <div key={member.id} className="members-grid-item">
+                  <div className="members-grid-item-checkbox">
                     <Checkbox
                       checked={selectedMembers.includes(member.id)}
                       onChange={() => handleSelectMember(member.id)}
-                      className="bg-card/80 backdrop-blur-sm"
+                      className="member-card-checkbox"
                     />
                   </div>
                   <MemberCard
@@ -424,12 +485,12 @@ const MembersPage = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-                <Icon name="Users" size={32} className="text-muted-foreground" />
+            <div className="members-page-empty">
+              <div className="members-page-empty-icon">
+                <Icon name="Users" size={32} className="members-page-empty-icon-svg" />
               </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">No members found</h3>
-              <p className="text-muted-foreground mb-4">
+              <h3 className="members-page-empty-title">No members found</h3>
+              <p className="members-page-empty-description">
                 {searchTerm || selectedRole || selectedDepartment || selectedStatus
                   ? "Try adjusting your filters to see more results." : "Get started by adding your first team member."
                 }

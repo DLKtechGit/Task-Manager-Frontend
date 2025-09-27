@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../../components/ui/Button';
 import Select from '../../../components/ui/Select';
+import './BulkActionsBar.css';
 
 const BulkActionsBar = ({ 
   selectedMembers, 
@@ -24,10 +25,10 @@ const BulkActionsBar = ({
   if (selectedMembers?.length === 0) return null;
 
   return (
-    <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mb-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center space-x-3">
-          <span className="text-sm font-medium text-foreground">
+    <div className="bulk-actions-bar">
+      <div className="bulk-actions-content">
+        <div className="bulk-actions-left">
+          <span className="bulk-actions-count">
             {selectedMembers?.length} member{selectedMembers?.length > 1 ? 's' : ''} selected
           </span>
           <Button
@@ -37,24 +38,25 @@ const BulkActionsBar = ({
             iconName="X"
             iconPosition="left"
             iconSize={14}
+            className="bulk-actions-clear"
           >
             Clear
           </Button>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="bulk-actions-right">
           <Select
             options={roleOptions}
             placeholder="Change Role"
             onChange={onBulkRoleChange}
-            className="sm:w-40"
+            className="bulk-actions-select"
           />
           
           <Select
             options={statusOptions}
             placeholder="Change Status"
             onChange={onBulkStatusChange}
-            className="sm:w-40"
+            className="bulk-actions-select"
           />
 
           <Button
@@ -64,6 +66,7 @@ const BulkActionsBar = ({
             iconName="Trash2"
             iconPosition="left"
             iconSize={14}
+            className="bulk-actions-button"
           >
             Remove
           </Button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
+import './BrandingPanel.css';
 
 const BrandingPanel = () => {
   const features = [
@@ -22,72 +23,65 @@ const BrandingPanel = () => {
   ];
 
   return (
-    <div className="relative h-full flex flex-col justify-center items-center p-8 bg-gradient-to-br from-primary/5 to-accent/5">
+    <div className="branding-panel">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-10 left-10 w-20 h-20 bg-primary rounded-full"></div>
-        <div className="absolute top-32 right-16 w-12 h-12 bg-accent rounded-full"></div>
-        <div className="absolute bottom-20 left-20 w-16 h-16 bg-secondary rounded-full"></div>
-        <div className="absolute bottom-32 right-12 w-8 h-8 bg-primary rounded-full"></div>
+      <div className="branding-panel-background">
+        <div className="branding-panel-circle-1"></div>
+        <div className="branding-panel-circle-2"></div>
+        <div className="branding-panel-circle-3"></div>
+        <div className="branding-panel-circle-4"></div>
       </div>
-      <div className="relative z-10 text-center max-w-md">
+      
+      <div className="branding-panel-content">
         {/* Logo and Brand */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="branding-panel-logo">
+          <div className="branding-panel-logo-icon">
+            <div>
               <Icon name="CheckSquare" size={32} color="white" />
             </div>
           </div>
-          <h2 className="text-3xl font-bold text-foreground mb-2">
-            TaskFlow Manager
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Streamline your team's productivity
-          </p>
+          <h2>TaskFlow Manager</h2>
+          <p>Streamline your team's productivity</p>
         </div>
 
         {/* Hero Illustration */}
-        <div className="mb-8">
-          <div className="w-64 h-48 mx-auto bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl flex items-center justify-center">
+        <div className="branding-panel-illustration">
+          <div>
             <Image
               src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop&crop=center"
               alt="Team collaboration illustration"
-              className="w-full h-full object-cover rounded-2xl opacity-80"
+              className="branding-panel-illustration-image"
             />
           </div>
         </div>
 
         {/* Feature Highlights */}
-        <div className="space-y-4">
+        <div className="branding-panel-features">
           {features?.map((feature, index) => (
-            <div key={index} className="flex items-center space-x-3 text-left">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <div key={index} className="branding-panel-feature">
+              <div className="branding-panel-feature-icon">
                 <Icon name={feature?.icon} size={18} color="var(--color-primary)" />
               </div>
-              <div>
-                <h3 className="text-sm font-medium text-foreground">
-                  {feature?.title}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                  {feature?.description}
-                </p>
+              <div className="branding-panel-feature-text">
+                <h3>{feature?.title}</h3>
+                <p>{feature?.description}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Trust Indicators */}
-        <div className="mt-8 pt-6 border-t border-border">
-          <div className="flex items-center justify-center space-x-4 text-xs text-muted-foreground">
-            <div className="flex items-center space-x-1">
+        <div className="branding-panel-trust">
+          <div className="branding-panel-trust-indicators">
+            <div className="branding-panel-trust-item">
               <Icon name="Shield" size={14} />
               <span>Secure</span>
             </div>
-            <div className="flex items-center space-x-1">
+            <div className="branding-panel-trust-item">
               <Icon name="Clock" size={14} />
               <span>24/7 Support</span>
             </div>
-            <div className="flex items-center space-x-1">
+            <div className="branding-panel-trust-item">
               <Icon name="Users" size={14} />
               <span>10k+ Teams</span>
             </div>

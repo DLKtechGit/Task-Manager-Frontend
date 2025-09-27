@@ -2,6 +2,7 @@ import React from 'react';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
+import './MemberFilters.css';
 
 const MemberFilters = ({ 
   searchTerm, 
@@ -16,8 +17,7 @@ const MemberFilters = ({
 }) => {
   const roleOptions = [
     { value: '', label: 'All Roles' },
-    { value: 'admin', label: 'Admin' },
-    { value: 'manager', label: 'Manager' },
+   
     { value: 'user', label: 'User' }
   ];
 
@@ -41,21 +41,21 @@ const MemberFilters = ({
   const hasActiveFilters = searchTerm || selectedRole || selectedDepartment || selectedStatus;
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6 mb-6">
-      <div className="flex flex-col lg:flex-row lg:items-end gap-4">
+    <div className="member-filters">
+      <div className="member-filters-content">
         {/* Search Input */}
-        <div className="flex-1 lg:max-w-sm">
+        <div className="member-filters-search">
           <Input
             type="search"
             placeholder="Search members..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e?.target?.value)}
-            className="w-full"
+            className="member-filters-search-input"
           />
         </div>
 
         {/* Role Filter */}
-        <div className="lg:w-40">
+        <div className="member-filters-select member-filters-select-role">
           <Select
             options={roleOptions}
             value={selectedRole}
@@ -65,7 +65,7 @@ const MemberFilters = ({
         </div>
 
         {/* Department Filter */}
-        <div className="lg:w-48">
+        <div className="member-filters-select member-filters-select-department">
           <Select
             options={departmentOptions}
             value={selectedDepartment}
@@ -75,7 +75,7 @@ const MemberFilters = ({
         </div>
 
         {/* Status Filter */}
-        <div className="lg:w-40">
+        <div className="member-filters-select member-filters-select-status">
           <Select
             options={statusOptions}
             value={selectedStatus}
@@ -92,6 +92,7 @@ const MemberFilters = ({
             iconName="X"
             iconPosition="left"
             iconSize={16}
+            className="member-filters-clear"
           >
             Clear
           </Button>

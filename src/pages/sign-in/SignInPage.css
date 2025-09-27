@@ -1,0 +1,95 @@
+/* SignInPage.css */
+.signin-page {
+  min-height: 100vh;
+  background-color: var(--color-background);
+  display: flex;
+}
+
+.signin-form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.signin-form-container {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.branding-panel {
+  display: none;
+  flex: 1;
+  max-width: 32rem;
+}
+
+@media (min-width: 1024px) {
+  .branding-panel {
+    display: flex;
+  }
+}
+
+.mobile-branding-header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .mobile-branding-header {
+    display: none;
+  }
+}
+
+.mobile-branding-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.mobile-branding-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-branding-icon {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-primary);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-branding-text h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-foreground);
+  margin: 0;
+}
+
+.mobile-branding-text p {
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+  margin: 0;
+}
+
+.mobile-spacing {
+  height: 5rem;
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .mobile-spacing {
+    display: none;
+  }
+}

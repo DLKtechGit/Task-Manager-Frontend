@@ -1,0 +1,92 @@
+.quick-actions {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.quick-actions-container {
+  width: 100%;
+}
+
+.quick-actions-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.quick-actions-title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quick-actions-icon {
+  color: var(--primary);
+}
+
+.quick-actions-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.quick-actions-badge {
+  padding: 0.25rem 0.5rem;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.75rem;
+  border-radius: 9999px;
+}
+
+.quick-actions-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.quick-actions-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.quick-actions-description {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+  .quick-actions-header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* CSS Variables for theming */
+:root {
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --foreground: #111827;
+  --muted-foreground: #6b7280;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1f2937;
+    --border-color: #374151;
+    --foreground: #f9fafb;
+    --muted-foreground: #9ca3af;
+    --primary: #60a5fa;
+    --primary-foreground: #1f2937;
+  }
+}

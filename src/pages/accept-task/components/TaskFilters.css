@@ -1,0 +1,111 @@
+/* TaskFilters.css */
+.task-filters-container {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.task-filters-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .task-filters-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+}
+
+.filter-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .filter-controls {
+    flex-direction: row;
+  }
+}
+
+.filter-select-container {
+  min-width: 0;
+  flex: 1;
+}
+
+.filter-select {
+  width: 100%;
+}
+
+.clear-filters-container {
+  flex-shrink: 0;
+}
+
+.task-counts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+@media (min-width: 768px) {
+  .task-counts-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.task-count-item {
+  text-align: center;
+}
+
+.task-count-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.pending-count {
+  color: #d97706; /* yellow-600 */
+}
+
+.in-progress-count {
+  color: #2563eb; /* blue-600 */
+}
+
+.completed-count {
+  color: #16a34a; /* green-600 */
+}
+
+.on-hold-count {
+  color: #4b5563; /* gray-600 */
+}
+
+.task-count-label {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* CSS Variables for theming */
+:root {
+  --card-bg: #fff;
+  --border-color: #e5e7eb;
+  --muted-foreground: #6b7280;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1f2937;
+    --border-color: #374151;
+    --muted-foreground: #9ca3af;
+  }
+}

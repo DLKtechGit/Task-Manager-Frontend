@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
-
+import "./TaskFilters.css"
 
 const TaskFilters = ({ 
   statusFilter, 
@@ -29,33 +29,33 @@ const TaskFilters = ({
   const hasActiveFilters = statusFilter !== 'all' || priorityFilter !== 'all';
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6 mb-6">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+    <div className="task-filters-container">
+      <div className="task-filters-content">
         {/* Filter Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 flex-1">
-          <div className="min-w-0 flex-1">
+        <div className="filter-controls">
+          <div className="filter-select-container">
             <Select
               label="Filter by Status"
               options={statusOptions}
               value={statusFilter}
               onChange={onStatusFilterChange}
-              className="w-full"
+              className="filter-select"
             />
           </div>
-          <div className="min-w-0 flex-1">
+          <div className="filter-select-container">
             <Select
               label="Filter by Priority"
               options={priorityOptions}
               value={priorityFilter}
               onChange={onPriorityFilterChange}
-              className="w-full"
+              className="filter-select"
             />
           </div>
         </div>
 
         {/* Clear Filters Button */}
         {hasActiveFilters && (
-          <div className="flex-shrink-0">
+          <div className="clear-filters-container">
             <Button
               variant="outline"
               size="sm"
@@ -69,23 +69,24 @@ const TaskFilters = ({
           </div>
         )}
       </div>
+      
       {/* Task Count Summary */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-border">
-        <div className="text-center">
-          <div className="text-2xl font-bold text-yellow-600">{taskCounts?.pending}</div>
-          <div className="text-sm text-muted-foreground">Pending</div>
+      <div className="task-counts-grid">
+        <div className="task-count-item">
+          <div className="task-count-number pending-count">{taskCounts.pending}</div>
+          <div className="task-count-label">Pending</div>
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-blue-600">{taskCounts?.in_progress}</div>
-          <div className="text-sm text-muted-foreground">In Progress</div>
+        <div className="task-count-item">
+          <div className="task-count-number in-progress-count">{taskCounts.in_progress}</div>
+          <div className="task-count-label">In Progress</div>
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-green-600">{taskCounts?.completed}</div>
-          <div className="text-sm text-muted-foreground">Completed</div>
+        <div className="task-count-item">
+          <div className="task-count-number completed-count">{taskCounts.completed}</div>
+          <div className="task-count-label">Completed</div>
         </div>
-        <div className="text-center">
-          <div className="text-2xl font-bold text-gray-600">{taskCounts?.on_hold}</div>
-          <div className="text-sm text-muted-foreground">On Hold</div>
+        <div className="task-count-item">
+          <div className="task-count-number total-count">{taskCounts.total}</div>
+          <div className="task-count-label">Total</div>
         </div>
       </div>
     </div>

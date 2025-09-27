@@ -4,6 +4,8 @@ import axios from 'axios';
 import Input from '../../../components/ui/Input';
 import Button from '../../../components/ui/Button';
 import Icon from '../../../components/AppIcon';
+import './SignInForm.css'
+
  
 const SignInForm = () => {
   const navigate = useNavigate();
@@ -76,23 +78,23 @@ const SignInForm = () => {
   };
  
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="mb-8 text-center">
-        <div className="flex items-center justify-center mb-4">
-          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+    <div className="signin-form-container">
+      <div className="signin-header">
+        <div className="signin-logo">
+          <div className="logo-icon">
             <Icon name="CheckSquare" size={24} color="white" />
           </div>
         </div>
-        <h1 className="text-2xl font-semibold text-foreground mb-2">Welcome Back</h1>
-        <p className="text-muted-foreground">Sign in to your TaskFlow Manager account</p>
+        <h1 className="signin-title">Welcome Back</h1>
+        <p className="signin-subtitle">Sign in to your TaskFlow Manager account</p>
       </div>
  
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="signin-form">
         {errors.general && (
-          <div className="p-4 bg-error/10 border border-error/20 rounded-lg">
-            <div className="flex items-center space-x-2">
+          <div className="error-alert">
+            <div className="error-content">
               <Icon name="AlertCircle" size={16} color="var(--color-error)" />
-              <p className="text-sm text-error">{errors.general}</p>
+              <p className="error-message">{errors.general}</p>
             </div>
           </div>
         )}
@@ -133,14 +135,14 @@ const SignInForm = () => {
           Sign In
         </Button>
  
-        <div className="flex items-center justify-between text-sm">
-          <button
+        <div className="form-footer">
+          {/* <button
             type="button"
             onClick={handleCreateAccount}
-            className="text-primary hover:text-primary/80 transition-micro focus:outline-none rounded px-1 py-1"
+            className="create-account-btn"
           >
             Create Account
-          </button>
+          </button> */}
         </div>
       </form>
     </div>
@@ -148,5 +150,3 @@ const SignInForm = () => {
 };
  
 export default SignInForm;
- 
- 

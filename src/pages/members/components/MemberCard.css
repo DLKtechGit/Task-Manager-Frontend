@@ -1,0 +1,275 @@
+.member-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.member-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.member-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.member-card-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.member-card-avatar-container {
+  position: relative;
+}
+
+.member-card-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-card-status-dot {
+  position: absolute;
+  bottom: -0.25rem;
+  right: -0.25rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--card-bg);
+}
+
+.member-card-status-dot-active {
+  background-color: var(--success);
+}
+
+.member-card-status-dot-inactive {
+  background-color: var(--error);
+}
+
+.member-card-status-dot-pending {
+  background-color: var(--warning);
+}
+
+.member-card-status-dot-default {
+  background-color: var(--muted);
+}
+
+.member-card-user-details {
+  flex: 1;
+}
+
+.member-card-user-name {
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.25rem 0;
+}
+
+.member-card-user-email {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.member-card-actions {
+  position: relative;
+}
+
+.member-card-menu-button {
+  height: 2rem;
+  width: 2rem;
+}
+
+.member-card-dropdown {
+  position: absolute;
+  right: 0;
+  top: 2rem;
+  width: 12rem;
+  background-color: var(--popover-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+}
+
+.member-card-dropdown-content {
+  padding: 0.25rem 0;
+}
+
+.member-card-dropdown-item {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.875rem;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.member-card-dropdown-item:hover {
+  background-color: var(--muted);
+}
+
+.member-card-dropdown-item.delete {
+  color: var(--error);
+}
+
+.member-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.member-card-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.member-card-detail-label {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.member-card-detail-value {
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.member-card-role-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.member-card-role-admin {
+  background-color: var(--error-bg);
+  color: var(--error-fg);
+}
+
+.member-card-role-manager {
+  background-color: var(--warning-bg);
+  color: var(--warning-fg);
+}
+
+.member-card-role-user {
+  background-color: var(--success-bg);
+  color: var(--success-fg);
+}
+
+.member-card-role-default {
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.member-card-status {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.member-card-status-active {
+  color: var(--success);
+}
+
+.member-card-status-inactive {
+  color: var(--error);
+}
+
+.member-card-status-pending {
+  color: var(--warning);
+}
+
+.member-card-status-default {
+  color: var(--muted-foreground);
+}
+
+.member-card-stats {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.member-card-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  text-align: center;
+}
+
+.member-card-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.member-card-stat-number {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.member-card-stat-number.completed {
+  color: var(--success);
+}
+
+.member-card-stat-number.in-progress {
+  color: var(--warning);
+}
+
+.member-card-stat-label {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* CSS Variables for theming */
+:root {
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --foreground: #111827;
+  --muted-foreground: #6b7280;
+  --popover-bg: #ffffff;
+  --muted: #f3f4f6;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --error-bg: #fef2f2;
+  --error-fg: #dc2626;
+  --warning-bg: #fffbeb;
+  --warning-fg: #d97706;
+  --success-bg: #f0fdf4;
+  --success-fg: #16a34a;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1f2937;
+    --border-color: #374151;
+    --foreground: #f9fafb;
+    --muted-foreground: #9ca3af;
+    --popover-bg: #374151;
+    --muted: #374151;
+    --success: #34d399;
+    --error: #f87171;
+    --warning: #fbbf24;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --error-fg: #fca5a5;
+    --warning-bg: rgba(245, 158, 11, 0.1);
+    --warning-fg: #fcd34d;
+    --success-bg: rgba(16, 185, 129, 0.1);
+    --success-fg: #6ee7b7;
+  }
+}

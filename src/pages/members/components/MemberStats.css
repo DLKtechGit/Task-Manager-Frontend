@@ -1,0 +1,116 @@
+.member-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .member-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .member-stats {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.member-stats-card {
+  background-color: white; /* card */
+  border: 1px solid #e5e7eb; /* border */
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.member-stats-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.member-stats-icon-container {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Icon background colors */
+.member-stats-icon-primary {
+  background-color: rgba(59, 130, 246, 0.1); /* primary/10 */
+}
+
+.member-stats-icon-success {
+  background-color: rgba(16, 185, 129, 0.1); /* success/10 */
+}
+
+.member-stats-icon-warning {
+  background-color: rgba(245, 158, 11, 0.1); /* warning/10 */
+}
+
+.member-stats-icon-error {
+  background-color: rgba(239, 68, 68, 0.1); /* error/10 */
+}
+
+/* Icon text colors */
+.member-stats-icon-text-primary {
+  color: #3b82f6; /* primary */
+}
+
+.member-stats-icon-text-success {
+  color: #10b981; /* success */
+}
+
+.member-stats-icon-text-warning {
+  color: #f59e0b; /* warning */
+}
+
+.member-stats-icon-text-error {
+  color: #ef4444; /* error */
+}
+
+.member-stats-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.member-stats-value {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #171717; /* foreground */
+}
+
+.member-stats-label {
+  font-size: 0.75rem;
+  color: #6b7280; /* muted-foreground */
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .member-stats {
+    gap: 0.75rem;
+  }
+  
+  .member-stats-card {
+    padding: 0.75rem;
+  }
+  
+  .member-stats-content {
+    gap: 0.5rem;
+  }
+  
+  .member-stats-icon-container {
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .member-stats-value {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}

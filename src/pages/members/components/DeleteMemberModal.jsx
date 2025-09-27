@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Image from '../../../components/AppImage';
+import './DeleteMemberModal.css';
 
 const DeleteMemberModal = ({ isOpen, onClose, member, onDeleteMember }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,47 +23,47 @@ const DeleteMemberModal = ({ isOpen, onClose, member, onDeleteMember }) => {
   if (!isOpen || !member) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="delete-member-modal-overlay">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="delete-member-modal-backdrop"
         onClick={onClose}
       />
       {/* Modal */}
-      <div className="relative bg-card border border-border rounded-lg shadow-modal w-full max-w-md mx-4">
+      <div className="delete-member-modal-container">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <h2 className="text-lg font-semibold text-foreground">Remove Member</h2>
+        <div className="delete-member-modal-header">
+          <h2 className="delete-member-modal-title">Remove Member</h2>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-8 w-8"
+            className="delete-member-modal-close-btn"
           >
             <Icon name="X" size={16} />
           </Button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
-          <div className="flex items-center space-x-4 mb-4">
+        <div className="delete-member-modal-content">
+          <div className="delete-member-info">
             <Image
               src={member?.avatar}
               alt={member?.name}
-              className="w-12 h-12 rounded-full object-cover"
+              className="delete-member-avatar"
             />
-            <div>
-              <h3 className="font-medium text-foreground">{member?.name}</h3>
-              <p className="text-sm text-muted-foreground">{member?.email}</p>
+            <div className="delete-member-details">
+              <h3 className="delete-member-name">{member?.name}</h3>
+              <p className="delete-member-email">{member?.email}</p>
             </div>
           </div>
 
-          <div className="bg-error/10 border border-error/20 rounded-lg p-4 mb-6">
-            <div className="flex items-start space-x-3">
-              <Icon name="AlertTriangle" size={20} className="text-error flex-shrink-0 mt-0.5" />
-              <div>
-                <h4 className="font-medium text-error mb-1">Warning</h4>
-                <p className="text-sm text-error/80">
+          <div className="delete-warning-container">
+            <div className="delete-warning-content">
+              <Icon name="AlertTriangle" size={20} className="delete-warning-icon" />
+              <div className="delete-warning-text">
+                <h4 className="delete-warning-title">Warning</h4>
+                <p className="delete-warning-description">
                   This action cannot be undone. The member will be permanently removed from the system, 
                   and all their task assignments will need to be reassigned.
                 </p>
@@ -70,13 +71,13 @@ const DeleteMemberModal = ({ isOpen, onClose, member, onDeleteMember }) => {
             </div>
           </div>
 
-          <p className="text-sm text-muted-foreground mb-6">
+          <p className="delete-confirmation-text">
             Are you sure you want to remove <strong>{member?.name}</strong> from the team? 
             This will also affect any tasks currently assigned to them.
           </p>
 
           {/* Actions */}
-          <div className="flex justify-end space-x-3">
+          <div className="delete-member-actions">
             <Button
               variant="outline"
               onClick={onClose}

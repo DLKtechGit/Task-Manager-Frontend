@@ -1,29 +1,30 @@
 import React from 'react';
 import TaskCard from './TaskCard';
 import Icon from '../../../components/AppIcon';
+import './TaskList.css';
 
 const TaskList = ({ tasks, onStatusUpdate, onAccept, onDecline, isLoading }) => {
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="flex items-center space-x-2 text-muted-foreground">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+      <div className="task-list-loading-container">
+        <div className="task-list-loading-content">
+          <div className="task-list-loading-spinner"></div>
           <span>Loading tasks...</span>
         </div>
       </div>
     );
   }
 
-  if (tasks?.length === 0) {
+  if (tasks.length === 0) {
     return (
-      <div className="bg-card border border-border rounded-lg p-12 text-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
-            <Icon name="ClipboardList" size={32} className="text-muted-foreground" />
+      <div className="task-list-empty-container">
+        <div className="task-list-empty-content">
+          <div className="task-list-empty-icon-container">
+            <Icon name="ClipboardList" size={32} className="task-list-empty-icon" />
           </div>
-          <div>
-            <h3 className="text-lg font-medium text-foreground mb-2">No Tasks Found</h3>
-            <p className="text-muted-foreground max-w-md">
+          <div className="task-list-empty-text">
+            <h3>No Tasks Found</h3>
+            <p>
               There are no tasks matching your current filters. Try adjusting your filter criteria or check back later for new assignments.
             </p>
           </div>
@@ -33,10 +34,10 @@ const TaskList = ({ tasks, onStatusUpdate, onAccept, onDecline, isLoading }) => 
   }
 
   return (
-    <div className="space-y-6">
-      {tasks?.map((task) => (
+    <div className="task-list-container">
+      {tasks.map((task) => (
         <TaskCard
-          key={task?.id}
+          key={task.id}
           task={task}
           onStatusUpdate={onStatusUpdate}
           onAccept={onAccept}

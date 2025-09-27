@@ -11,9 +11,9 @@ const NavigationSidebar = ({ isCollapsed = false, onToggle, userRole = 'user' })
   const [isMobileOpen, setIsMobileOpen] = useState(false);
  
   const navigationItems = [
-    { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard', roles: ['admin', 'manager', 'user'] },
+    { label: 'Dashboard', path: '/dashboard', icon: 'LayoutDashboard', roles: ['admin', 'manager'] },
     { label: 'Manage Tasks', path: '/manage-tasks', icon: 'ClipboardList', roles: ['admin', 'manager'] },
-    { label: 'Accept Task', path: '/accept-task', icon: 'CheckSquare', roles: ['admin', 'manager', 'user'] },
+    { label: 'Accept Task', path: '/accept-task', icon: 'CheckSquare', roles: [, 'manager', 'user'] },
     { label: 'Members', path: '/members', icon: 'Users', roles: ['admin', 'manager'] }
   ];
  

@@ -1,82 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Select from '../../../components/ui/Select';
 import './RecentTasksList.css';
 
 const RecentTasksList = () => {
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Implement user authentication system",
-      assignee: {
-        name: "Sarah Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
-      },
-      priority: "high",
-      status: "in_progress",
-      dueDate: "2025-01-15",
-      project: "TaskFlow Manager"
-    },
-    {
-      id: 2,
-      title: "Design dashboard wireframes",
-      assignee: {
-        name: "Michael Chen",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
-      },
-      priority: "medium",
-      status: "assigned",
-      dueDate: "2025-01-18",
-      project: "UI/UX Project"
-    },
-    {
-      id: 3,
-      title: "Database optimization and indexing",
-      assignee: {
-        name: "Emily Rodriguez",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
-      },
-      priority: "high",
-      status: "closed",
-      dueDate: "2025-01-12",
-      project: "Backend Services"
-    },
-    {
-      id: 4,
-      title: "Create API documentation",
-      assignee: {
-        name: "David Kim",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-      },
-      priority: "low",
-      status: "assigned",
-      dueDate: "2025-01-20",
-      project: "Documentation"
-    },
-    {
-      id: 5,
-      title: "Mobile app responsive testing",
-      assignee: {
-        name: "Lisa Wang",
-        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
-      },
-      priority: "medium",
-      status: "in_progress",
-      dueDate: "2025-01-16",
-      project: "Quality Assurance"
-    }
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const statusOptions = [
-    { value: 'unassigned', label: 'Unassigned' },
-    { value: 'assigned', label: 'Assigned' },
-    { value: 'in_progress', label: 'In Progress' },
-    { value: 'closed', label: 'Closed' }
+    { value: 'Unassigned', label: 'Unassigned' },
+    { value: 'Assigned', label: 'Assigned' },
+    { value: 'In Progress', label: 'In Progress' },
+    { value: 'Closed', label: 'Closed' }
   ];
 
   const getPriorityClass = (priority) => {
-    switch (priority) {
+    switch (priority.toLowerCase()) {
+      case 'critical':
+        return 'recent-tasks-priority priority-critical';
       case 'high':
         return 'recent-tasks-priority priority-high';
       case 'medium':
@@ -90,13 +33,13 @@ const RecentTasksList = () => {
 
   const getStatusClass = (status) => {
     switch (status) {
-      case 'unassigned':
+      case 'Unassigned':
         return 'recent-tasks-status status-unassigned';
-      case 'assigned':
+      case 'Assigned':
         return 'recent-tasks-status status-assigned';
-      case 'in_progress':
+      case 'In Progress':
         return 'recent-tasks-status status-in_progress';
-      case 'closed':
+      case 'Closed':
         return 'recent-tasks-status status-closed';
       default:
         return 'recent-tasks-status status-unassigned';
@@ -114,8 +57,8 @@ const RecentTasksList = () => {
 
   const handleStatusChange = (taskId, newStatus) => {
     setTasks(prevTasks => 
-      prevTasks?.map(task => 
-        task?.id === taskId ? { ...task, status: newStatus } : task
+      prevTasks.map(task => 
+        task.id === taskId ? { ...task, status: newStatus } : task
       )
     );
   };
@@ -123,6 +66,37 @@ const RecentTasksList = () => {
   const isOverdue = (dueDate) => {
     return new Date(dueDate) < new Date();
   };
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        const res = await axios.get('http://localhost:5000/api/admin/recent/tasks', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const formattedTasks = res.data.map((task, index) => ({
+          id: index + 1,
+          title: task.task_title,
+          project: task.task_description,
+          assignee: task.assigned_user || { username: 'Unassigned', profile_pic: '' },
+          priority: task.priority,
+          status: task.status,
+          dueDate: task.due_date
+        }));
+
+        setTasks(formattedTasks);
+      } catch (err) {
+        console.error('Error fetching recent tasks:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
+
+  if (loading) return <p className="dashboard-loading">Loading recent tasks...</p>;
 
   return (
     <div className="recent-tasks">
@@ -147,51 +121,53 @@ const RecentTasksList = () => {
               </tr>
             </thead>
             <tbody className="recent-tasks-tbody">
-              {tasks?.map((task) => (
-                <tr key={task?.id} className="recent-tasks-tr recent-tasks-transition">
+              {tasks.map((task) => (
+                <tr key={task.id} className="recent-tasks-tr recent-tasks-transition">
                   <td className="recent-tasks-td">
                     <div>
                       <p className="recent-tasks-task-title">
-                        {task?.title}
+                        {task.title}
                       </p>
                       <p className="recent-tasks-project">
-                        {task?.project}
+                        {task.project}
                       </p>
                     </div>
                   </td>
                   <td className="recent-tasks-td">
                     <div className="recent-tasks-assignee">
-                      <Image
-                        src={task?.assignee?.avatar}
-                        alt={task?.assignee?.name}
-                        className="recent-tasks-avatar"
-                      />
+                      {task.assignee.profile_pic && (
+                        <Image
+                          src={task.assignee.profile_pic}
+                          alt={task.assignee.username}
+                          className="recent-tasks-avatar"
+                        />
+                      )}
                       <span className="recent-tasks-assignee-name">
-                        {task?.assignee?.name}
+                        {task.assignee.username}
                       </span>
                     </div>
                   </td>
                   <td className="recent-tasks-td">
-                    <span className={getPriorityClass(task?.priority)}>
-                      {task?.priority?.charAt(0)?.toUpperCase() + task?.priority?.slice(1)}
+                    <span className={getPriorityClass(task.priority)}>
+                      {task.priority}
                     </span>
                   </td>
                   <td className="recent-tasks-td">
                     <div className="recent-tasks-select-wrapper">
                       <Select
                         options={statusOptions}
-                        value={task?.status}
-                        onChange={(value) => handleStatusChange(task?.id, value)}
+                        value={task.status}
+                        onChange={(value) => handleStatusChange(task.id, value)}
                         className="recent-tasks-select-sm"
                       />
                     </div>
                   </td>
                   <td className="recent-tasks-td">
                     <div className="recent-tasks-due-date">
-                      <span className={`recent-tasks-date ${isOverdue(task?.dueDate) ? 'recent-tasks-date-overdue' : 'recent-tasks-date-normal'}`}>
-                        {formatDate(task?.dueDate)}
+                      <span className={`recent-tasks-date ${isOverdue(task.dueDate) ? 'recent-tasks-date-overdue' : 'recent-tasks-date-normal'}`}>
+                        {formatDate(task.dueDate)}
                       </span>
-                      {isOverdue(task?.dueDate) && (
+                      {isOverdue(task.dueDate) && (
                         <Icon name="AlertCircle" size={16} color="var(--color-error)" />
                       )}
                     </div>
@@ -205,38 +181,40 @@ const RecentTasksList = () => {
       
       {/* Mobile View */}
       <div className="recent-tasks-mobile">
-        {tasks?.map((task) => (
-          <div key={task?.id} className="recent-tasks-card">
+        {tasks.map((task) => (
+          <div key={task.id} className="recent-tasks-card">
             <div className="recent-tasks-card-header">
               <div className="recent-tasks-card-title">
                 <h4 className="recent-tasks-card-title-text">
-                  {task?.title}
+                  {task.title}
                 </h4>
                 <p className="recent-tasks-card-project">
-                  {task?.project}
+                  {task.project}
                 </p>
               </div>
-              <span className={getPriorityClass(task?.priority)}>
-                {task?.priority?.charAt(0)?.toUpperCase() + task?.priority?.slice(1)}
+              <span className={getPriorityClass(task.priority)}>
+                {task.priority}
               </span>
             </div>
 
             <div className="recent-tasks-card-body">
               <div className="recent-tasks-card-assignee">
-                <Image
-                  src={task?.assignee?.avatar}
-                  alt={task?.assignee?.name}
-                  className="recent-tasks-card-avatar"
-                />
+                {task.assignee.profile_pic && (
+                  <Image
+                    src={task.assignee.profile_pic}
+                    alt={task.assignee.username}
+                    className="recent-tasks-card-avatar"
+                  />
+                )}
                 <span className="recent-tasks-card-assignee-name">
-                  {task?.assignee?.name}
+                  {task.assignee.username}
                 </span>
               </div>
               <div className="recent-tasks-card-due-date">
-                <span className={`recent-tasks-card-date ${isOverdue(task?.dueDate) ? 'recent-tasks-card-date-overdue' : 'recent-tasks-card-date-normal'}`}>
-                  {formatDate(task?.dueDate)}
+                <span className={`recent-tasks-card-date ${isOverdue(task.dueDate) ? 'recent-tasks-card-date-overdue' : 'recent-tasks-card-date-normal'}`}>
+                  {formatDate(task.dueDate)}
                 </span>
-                {isOverdue(task?.dueDate) && (
+                {isOverdue(task.dueDate) && (
                   <Icon name="AlertCircle" size={14} color="var(--color-error)" />
                 )}
               </div>
@@ -245,8 +223,8 @@ const RecentTasksList = () => {
             <div className="recent-tasks-select-wrapper">
               <Select
                 options={statusOptions}
-                value={task?.status}
-                onChange={(value) => handleStatusChange(task?.id, value)}
+                value={task.status}
+                onChange={(value) => handleStatusChange(task.id, value)}
                 className="recent-tasks-select-md"
               />
             </div>

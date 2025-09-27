@@ -1,0 +1,206 @@
+.members-page {
+  min-height: 100vh;
+  background-color: var(--background);
+}
+
+.members-page-content {
+  margin-left: 0;
+}
+
+.members-page-container {
+  padding: 1.5rem;
+}
+
+.members-page-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.members-page-header-info {
+  margin-bottom: 1rem;
+}
+
+.members-page-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0 0 0.5rem 0;
+}
+
+.members-page-subtitle {
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.members-page-add-button {
+  margin-top: 1rem;
+}
+
+.members-page-error {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: 0.375rem;
+}
+
+.members-page-error-text {
+  color: var(--warning);
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.members-page-select-all {
+  margin-bottom: 1rem;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.members-grid-item {
+  position: relative;
+}
+
+.members-grid-item-checkbox {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+}
+
+.member-card-checkbox {
+  background-color: var(--card-bg-alpha);
+  backdrop-filter: blur(4px);
+}
+
+.members-page-empty {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.members-page-empty-icon {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--muted);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+}
+
+.members-page-empty-icon-svg {
+  color: var(--muted-foreground);
+}
+
+.members-page-empty-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  margin: 0 0 0.5rem 0;
+}
+
+.members-page-empty-description {
+  color: var(--muted-foreground);
+  margin: 0 0 1rem 0;
+}
+
+.members-page-loading {
+  min-height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.members-page-loading-content {
+  text-align: center;
+}
+
+.members-page-loading-icon {
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem auto;
+}
+
+.members-page-loading-text {
+  color: var(--foreground);
+  margin: 0;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .members-page-content {
+    margin-left: 15rem;
+  }
+  
+  .members-page-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .members-page-header-info {
+    margin-bottom: 0;
+  }
+  
+  .members-page-add-button {
+    margin-top: 0;
+  }
+  
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .members-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .members-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* CSS Variables for theming */
+:root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --muted-foreground: #6b7280;
+  --muted: #f3f4f6;
+  --card-bg: #ffffff;
+  --card-bg-alpha: rgba(255, 255, 255, 0.8);
+  --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.1);
+  --warning-border: rgba(245, 158, 11, 0.2);
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111827;
+    --foreground: #f9fafb;
+    --muted-foreground: #9ca3af;
+    --muted: #374151;
+    --card-bg: #1f2937;
+    --card-bg-alpha: rgba(31, 41, 55, 0.8);
+    --warning: #fbbf24;
+    --warning-bg: rgba(251, 191, 36, 0.1);
+    --warning-border: rgba(251, 191, 36, 0.2);
+  }
+}

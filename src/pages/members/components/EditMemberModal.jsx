@@ -3,6 +3,7 @@ import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
+import './EditMemberModal.css';
 
 const EditMemberModal = ({ isOpen, onClose, member, onUpdateMember }) => {
   const [formData, setFormData] = useState({
@@ -104,29 +105,29 @@ const EditMemberModal = ({ isOpen, onClose, member, onUpdateMember }) => {
   if (!isOpen || !member) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="edit-member-modal-overlay">
       {/* Backdrop */}
       <div 
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="edit-member-modal-backdrop"
         onClick={onClose}
       />
       {/* Modal */}
-      <div className="relative bg-card border border-border rounded-lg shadow-modal w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="edit-member-modal-container">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
-          <h2 className="text-lg font-semibold text-foreground">Edit Member</h2>
+        <div className="edit-member-modal-header">
+          <h2 className="edit-member-modal-title">Edit Member</h2>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-8 w-8"
+            className="edit-member-modal-close-btn"
           >
             <Icon name="X" size={16} />
           </Button>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="edit-member-modal-form">
           <Input
             label="Full Name"
             type="text"
@@ -182,7 +183,7 @@ const EditMemberModal = ({ isOpen, onClose, member, onUpdateMember }) => {
           />
 
           {/* Actions */}
-          <div className="flex justify-end space-x-3 pt-4">
+          <div className="edit-member-modal-actions">
             <Button
               type="button"
               variant="outline"

@@ -1,0 +1,167 @@
+.delete-member-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-member-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.delete-member-modal-container {
+  position: relative;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 1rem;
+}
+
+.delete-member-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.delete-member-modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.delete-member-modal-close-btn {
+  height: 2rem;
+  width: 2rem;
+}
+
+.delete-member-modal-content {
+  padding: 1.5rem;
+}
+
+.delete-member-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.delete-member-avatar {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.delete-member-details {
+  flex: 1;
+}
+
+.delete-member-name {
+  font-weight: 500;
+  color: var(--foreground);
+  margin: 0 0 0.25rem 0;
+}
+
+.delete-member-email {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+.delete-warning-container {
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.delete-warning-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.delete-warning-icon {
+  color: var(--error);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.delete-warning-text {
+  flex: 1;
+}
+
+.delete-warning-title {
+  font-weight: 500;
+  color: var(--error);
+  margin: 0 0 0.25rem 0;
+}
+
+.delete-warning-description {
+  font-size: 0.875rem;
+  color: var(--error-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.delete-confirmation-text {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.delete-confirmation-text strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.delete-member-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* CSS Variables for theming */
+:root {
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+  --foreground: #111827;
+  --muted-foreground: #6b7280;
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-border: rgba(239, 68, 68, 0.2);
+  --error: #dc2626;
+  --error-muted: rgba(220, 38, 38, 0.8);
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #1f2937;
+    --border-color: #374151;
+    --foreground: #f9fafb;
+    --muted-foreground: #9ca3af;
+    --error-bg: rgba(239, 68, 68, 0.15);
+    --error-border: rgba(239, 68, 68, 0.3);
+    --error: #ef4444;
+    --error-muted: rgba(239, 68, 68, 0.8);
+  }
+}
